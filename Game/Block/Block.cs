@@ -17,6 +17,7 @@ public class Block : MonoBehaviour {
 	public int nextFowardBlockNum = -1;
 	public int nextReverseBlockNum = -1;
 	public int bonusExpPoint = 0;
+	public GameObject keeperObject;
 
     void Awake()
     {

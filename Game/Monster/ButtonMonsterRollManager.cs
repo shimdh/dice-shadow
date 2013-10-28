@@ -155,6 +155,13 @@ public class ButtonMonsterRollManager : MonoBehaviour {
 		GamePlayer win_player = sceneController.gamePlayersManager.players[win_player_no];
 		Debug.Log("Monster.ApplyWinPlayer");
 		win_player.targetBlock.monsterCard.healthPoint -= 1;
+		if (win_player.targetBlock.blockState == DataCenter.BlockState.Keeper) {
+			if (win_player.targetBlock.monsterCard.healthPoint == 0) {
+				if (win_player.targetBlock.keeperObject.activeSelf) {
+					win_player.targetBlock.keeperObject.SetActive(false);
+				}
+			}			
+		}
 		win_player.playerCharacter.Experience += win_player.targetBlock.monsterCard.experiencePoint;
 		
 		win_player.MoveCompleted();
