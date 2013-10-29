@@ -165,11 +165,11 @@ public class GameSceneController : MonoBehaviour {
 		if (current_num < 100) {
 			start_no = 0;
 		} else if (current_num < 200) {
-			start_no = 100;
+			start_no = 0;
 		} else if (current_num < 300) {
-			start_no = 200;
+			start_no = 100;
 		} else {
-			start_no = 300;
+			start_no = 200;
 		}
 		
 		DisableBattlePanel();
