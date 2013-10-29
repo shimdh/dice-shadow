@@ -36,6 +36,7 @@ public class GameSceneController : MonoBehaviour {
 	public GameObject threeCamera;
 	public GameObject uiCamera;
 	
+	public float showStateTime = 0.5f;
 	public GameObject battleStateImage;
 	public GameObject monsterStateImage;
 	
@@ -395,7 +396,7 @@ public class GameSceneController : MonoBehaviour {
 			state_image.SetActive(true);
 		}
 		
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(showStateTime);
 		
 		if (state_image.activeSelf) {
 			state_image.SetActive(false);
