@@ -141,7 +141,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
 		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
 		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
 			sceneController.showLabel.text = "Game Over";
-			StartCoroutine("ShowStateImage", sceneController.gameOverStateImage);
+			StartCoroutine(sceneController.ShowStateImage(sceneController.gameOverStateImage));
 			sceneController.RestartGame();
 		}	
 		else {
@@ -161,7 +161,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
 		GamePlayer win_player = sceneController.gamePlayersManager.players [win_player_no];
 		Debug.Log ("Monster.ApplyWinPlayer");
 		
-		StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
+		StartCoroutine(sceneController.ShowStateImage(sceneController.victoryStateImage));
 		win_player.targetBlock.monsterCard.healthPoint -= 1;
 		if (win_player.targetBlock.blockState == DataCenter.BlockState.Keeper) {
 			if (win_player.targetBlock.monsterCard.healthPoint == 0) {
