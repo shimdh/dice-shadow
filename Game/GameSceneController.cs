@@ -35,6 +35,10 @@ public class GameSceneController : MonoBehaviour {
 	public GameObject twoCamera;
 	public GameObject threeCamera;
 	public GameObject uiCamera;
+	
+	public GameObject battleStateImage;
+	public GameObject monsterStateImage;
+	
 
     private void Awake() {
         if (instance == null) {
@@ -384,5 +388,17 @@ public class GameSceneController : MonoBehaviour {
 		DataCenter.playerTurnNo = 0;
 		
 		EnableMovePanel();
+	}
+	
+	public IEnumerator ShowStateImage(GameObject state_image) {
+		if (!state_image.activeSelf) {
+			state_image.SetActive(true);
+		}
+		
+		yield return new WaitForSeconds(1.0f);
+		
+		if (state_image.activeSelf) {
+			state_image.SetActive(false);
+		}
 	}
 }
