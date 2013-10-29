@@ -68,8 +68,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
                 
 				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
                 
-				StartCoroutine ("DisableMonsterPanel");				
-				StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
+				StartCoroutine ("DisableMonsterPanel");		
 				ApplyWinPlayer (win_player_no);				
 
 			} else {
@@ -96,7 +95,6 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
 
 				StartCoroutine ("DisableMonsterPanel");
-				StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
 				ApplyWinPlayer (win_player_no);				
 
 			} else {
@@ -162,6 +160,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
 		sceneController.showLabel.text = "Win";
 		GamePlayer win_player = sceneController.gamePlayersManager.players [win_player_no];
 		Debug.Log ("Monster.ApplyWinPlayer");
+		
+		StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
 		win_player.targetBlock.monsterCard.healthPoint -= 1;
 		if (win_player.targetBlock.blockState == DataCenter.BlockState.Keeper) {
 			if (win_player.targetBlock.monsterCard.healthPoint == 0) {
