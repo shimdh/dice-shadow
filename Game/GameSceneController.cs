@@ -60,7 +60,6 @@ public class GameSceneController : MonoBehaviour {
             LayerMask.NameToLayer("Player"), true);
 
         EnableMovePanel();
-    
     }
 
     /// <summary>
@@ -150,7 +149,7 @@ public class GameSceneController : MonoBehaviour {
         if (num < 0) {
             num = -num;
         }
-        gamePlayersManager.players[player_no].isForward = false;
+        gamePlayersManager.players[player_no].isForward = true;
 
         DisableBattlePanel();
 
@@ -357,5 +356,33 @@ public class GameSceneController : MonoBehaviour {
 		}
 		
 		camMove.Follow(object_tr);
+	}
+	
+	public void RestartGame() {
+		if (battlePanelManager.battlePanel.activeSelf) {
+			battlePanelManager.battlePanel.SetActive(false);
+		}
+		
+		if (monsterPanelManager.monsterPanel.activeSelf) {
+			monsterPanelManager.monsterPanel.SetActive(false);
+		}
+		
+		if (gamblePanelManager.gamblePanel.activeSelf) {
+			gamblePanelManager.gamblePanel.SetActive(false);
+		}	
+		
+		if (movePanelManager.moveDicePanel.activeSelf) {
+			movePanelManager.moveDicePanel.SetActive(true);
+		}
+		
+		for (int i = 0; i < DataCenter.playerCount; i++) {
+			gamePlayersManager.players[i].remainMoveCount = 0;
+			gamePlayersManager.players[i].nextNum = 0;
+			gamePlayersManager.players[i].JustMoveTo();
+		}
+		
+		DataCenter.playerTurnNo = 0;
+		
+		EnableMovePanel();
 	}
 }

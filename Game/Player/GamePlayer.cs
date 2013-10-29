@@ -357,6 +357,23 @@ public class GamePlayer : MonoBehaviour
 			"oncomplete", "MovedBlock"));
 	}
 	
+	public void JustMoveTo() {
+		sceneController.ActiveThreeCamera(gameObject.transform);
+		RemoveBlockPosition ();		
+
+		float moving_time = 0.0f;
+		
+
+		gotEvent = false;
+
+		SetTargetBlockObject ();
+		
+		iTween.MoveTo (gameObject, iTween.Hash ("position", 
+			new Vector3 (targetBlockObject.transform.position.x, 
+				transform.position.y, 
+				targetBlockObject.transform.position.z), "time", moving_time));
+	}
+	
 	/// <summary>
 	/// 이동할 블럭 오브젝트 선정;
 	/// </summary>
