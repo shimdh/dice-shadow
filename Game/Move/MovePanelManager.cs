@@ -10,6 +10,7 @@ public class MovePanelManager : MonoBehaviour {
     public MoveDices moveDices;
     public MoveDiceTotal moveDiceTotal;
     public MovePlayerName movePlayerName;
+	public ButtonMoveRollManager rollManager;
 
 	// Use this for initialization
 	void Start () {

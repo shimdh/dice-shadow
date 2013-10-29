@@ -7,6 +7,7 @@ using System.Collections;
 public class MonsterPanelManager : MonoBehaviour {
     public GameObject monsterPanel;
     public BattleDices[] battleDices;
+	public ButtonMonsterRollManager rollManager;
 
     // Use this for initialization
     void Start()

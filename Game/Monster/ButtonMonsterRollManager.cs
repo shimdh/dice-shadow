@@ -73,7 +73,9 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				ApplyWinPlayer (win_player_no);				
 
 			} else {
-
+				if (DataCenter.playerTurnNo == 1) {
+					OnClick();
+				}
 			}
 		} else {
 			if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
@@ -98,7 +100,9 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				ApplyWinPlayer (win_player_no);				
 
 			} else {
-
+				if (DataCenter.playerTurnNo == 1) {
+					OnClick();
+				}
 			}
 		}
 	}

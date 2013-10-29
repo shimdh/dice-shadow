@@ -112,6 +112,10 @@ public class GameSceneController : MonoBehaviour {
         Debug.Log("player_no: " + player_no);
 
         movePanelManager.ActiveMovePanel(true, gamePlayersManager.players[player_no].playerName);
+		
+		if (DataCenter.playerTurnNo == 1) {
+			movePanelManager.rollManager.OnClick();
+		}
     }
 
 
@@ -272,6 +276,10 @@ public class GameSceneController : MonoBehaviour {
         monsterPanelManager.battleDices[1].battlePlayerHealth.UpdateHealthPoint(game_player.healthTotalCount);
 		
         monsterPanelManager.ActiveValidMonsterDices(dice_count.ToArray());
+		
+		if (DataCenter.playerTurnNo == 1) {
+			monsterPanelManager.rollManager.OnClick();
+		}
     }
 	
 	/// <summary>

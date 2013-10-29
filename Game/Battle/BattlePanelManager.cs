@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public class BattlePanelManager : MonoBehaviour {
 	public GameObject battlePanel;
 	public BattleDices[] battleDices;
+	public ButtonBattleRollManager rollManager;
 	
 	// Use this for initialization
 	void Start () {
