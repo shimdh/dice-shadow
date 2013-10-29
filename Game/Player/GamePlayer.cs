@@ -67,7 +67,7 @@ public class GamePlayer : MonoBehaviour
 				sceneController.DisableMovePanel ();
 			}            
 			
-			StartCoroutine(sceneController.ShowStateImage(sceneController.battleStateImage));
+			sceneController.ActionStateImage(sceneController.battleStateImage);			
 			
 			DataCenter.gameState = DataCenter.GameState.Battled;
 			Debug.Log ("EnableBattlePanel");
@@ -106,7 +106,8 @@ public class GamePlayer : MonoBehaviour
 					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 						sceneController.DisableMovePanel ();
 					}
-					StartCoroutine(sceneController.ShowStateImage(sceneController.battleStateImage));
+					sceneController.ActionStateImage(sceneController.battleStateImage);
+					
 					DataCenter.gameState = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
 					sceneController.EnableMonsterPanel (targetBlock);
@@ -124,7 +125,7 @@ public class GamePlayer : MonoBehaviour
 					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 						sceneController.DisableMovePanel ();
 					}
-					StartCoroutine(sceneController.ShowStateImage(sceneController.battleStateImage));
+					sceneController.ActionStateImage(sceneController.battleStateImage);					
 					
 					DataCenter.gameState = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
@@ -159,7 +160,8 @@ public class GamePlayer : MonoBehaviour
 						if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 							sceneController.DisableMovePanel ();
 						}
-						StartCoroutine(sceneController.ShowStateImage(sceneController.ladderStateImage));
+						sceneController.ActionStateImage(sceneController.ladderStateImage);
+						
 						DataCenter.gameState = DataCenter.GameState.Ladder;
 						sceneController.EnableMonsterPanel (targetBlock);
 						return;
@@ -196,8 +198,8 @@ public class GamePlayer : MonoBehaviour
 					//			sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
 					//			sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
 				
+					sceneController.ActionStateImage(sceneController.comeStateImage);
 					
-					StartCoroutine(sceneController.ShowStateImage(sceneController.comeStateImage));
 					sceneController.gamePlayersManager.players [target_player_no].RemoveBlockPosition ();
 					sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
 					sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
@@ -217,7 +219,8 @@ public class GamePlayer : MonoBehaviour
 						target_player_no = 0;
 					}
 					//			ChangePlayerTurn();
-					StartCoroutine(sceneController.ShowStateImage(sceneController.goStateImage));
+					sceneController.ActionStateImage(sceneController.goStateImage);
+					
 					nextNum = sceneController.gamePlayersManager.players [target_player_no].currentNum;
 					TweenMoveTo (true);
 					return;

@@ -404,6 +404,11 @@ public class GameSceneController : MonoBehaviour {
 		EnableMovePanel();
 	}
 	
+	
+	public void ActionStateImage(GameObject state_image) {
+		StartCoroutine(ShowStateImage(state_image));
+	}
+	
 	public IEnumerator ShowStateImage(GameObject state_image) {
 		if (!state_image.activeSelf) {
 			state_image.SetActive(true);
