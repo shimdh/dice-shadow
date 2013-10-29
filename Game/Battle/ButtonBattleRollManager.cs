@@ -125,6 +125,10 @@ public class ButtonBattleRollManager : MonoBehaviour {
 	/// <returns></returns>
 	public void BattleRoll ()
 	{
+		if (sceneController == null) {
+			sceneController = GameSceneController.Instance;
+		}
+		
         Debug.Log("BattleRoll");
 		for (int i = 0; i < 2; i++) {
             sceneController.battlePanelManager.battleDices[i].RollDices();
