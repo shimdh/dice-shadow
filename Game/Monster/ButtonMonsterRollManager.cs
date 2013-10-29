@@ -68,8 +68,9 @@ public class ButtonMonsterRollManager : MonoBehaviour
                 
 				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
                 
-				StartCoroutine ("DisableMonsterPanel");
-				ApplyWinPlayer (win_player_no);
+				StartCoroutine ("DisableMonsterPanel");				
+				StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
+				ApplyWinPlayer (win_player_no);				
 
 			} else {
 
@@ -93,7 +94,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
 
 				StartCoroutine ("DisableMonsterPanel");
-				ApplyWinPlayer (win_player_no);
+				StartCoroutine("ShowStateImage", sceneController.victoryStateImage);
+				ApplyWinPlayer (win_player_no);				
 
 			} else {
 
@@ -137,6 +139,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
 		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
 		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
 			sceneController.showLabel.text = "Game Over";
+			StartCoroutine("ShowStateImage", sceneController.gameOverStateImage);
 			sceneController.RestartGame();
 		}	
 		else {

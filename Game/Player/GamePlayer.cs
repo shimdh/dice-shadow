@@ -62,14 +62,16 @@ public class GamePlayer : MonoBehaviour
 //		targetBlock.visitedPlayers.Add (DataCenter.playerTurnNo);
 		
         
-		if (targetBlock.visitedPlayers.Count == 2) {
+		if (targetBlock.visitedPlayers.Count == 2) {			
 			if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 				sceneController.DisableMovePanel ();
 			}            
+			
+			StartCoroutine("ShowStateImage", sceneController.battleStateImage);
+			
 			DataCenter.gameState = DataCenter.GameState.Battled;
 			Debug.Log ("EnableBattlePanel");
 			sceneController.EnableBattlePanel (targetBlock);
-
 			return;
 		}
 
@@ -104,6 +106,7 @@ public class GamePlayer : MonoBehaviour
 					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 						sceneController.DisableMovePanel ();
 					}
+					StartCoroutine("ShowStateImage", sceneController.battleStateImage);
 					DataCenter.gameState = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
 					sceneController.EnableMonsterPanel (targetBlock);
@@ -121,6 +124,8 @@ public class GamePlayer : MonoBehaviour
 					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 						sceneController.DisableMovePanel ();
 					}
+					StartCoroutine("ShowStateImage", sceneController.battleStateImage);
+					
 					DataCenter.gameState = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
 					sceneController.EnableMonsterPanel (targetBlock);
@@ -148,12 +153,13 @@ public class GamePlayer : MonoBehaviour
 				}
 				
 			case DataCenter.BlockState.Ladder:
-				if ( playerCharacter.Level >= targetBlock.levelLadder) {
+				if (playerCharacter.Level >= targetBlock.levelLadder) {
 					if (!gotEvent) {
 						gotEvent = true;
 						if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
 							sceneController.DisableMovePanel ();
 						}
+						StartCoroutine("ShowStateImage", sceneController.ladderStateImage);
 						DataCenter.gameState = DataCenter.GameState.Ladder;
 						sceneController.EnableMonsterPanel (targetBlock);
 						return;
@@ -162,8 +168,7 @@ public class GamePlayer : MonoBehaviour
 						TweenMoveTo (true);
 						return;
 					}
-				} 
-				else {
+				} else {
 					ChangePlayerTurn ();
 					break;
 				}
@@ -191,6 +196,8 @@ public class GamePlayer : MonoBehaviour
 					//			sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
 					//			sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
 				
+					
+					StartCoroutine("ShowStateImage", sceneController.comeStateImage);
 					sceneController.gamePlayersManager.players [target_player_no].RemoveBlockPosition ();
 					sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
 					sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
@@ -210,6 +217,7 @@ public class GamePlayer : MonoBehaviour
 						target_player_no = 0;
 					}
 					//			ChangePlayerTurn();
+					StartCoroutine("ShowStateImage", sceneController.goStateImage);
 					nextNum = sceneController.gamePlayersManager.players [target_player_no].currentNum;
 					TweenMoveTo (true);
 					return;
@@ -253,8 +261,7 @@ public class GamePlayer : MonoBehaviour
 				} else {
 					nextNum = currentNum + 1;
 				}
-			}
-			else {
+			} else {
 				nextNum = currentNum + 1;
 			}
 		} else {
@@ -264,8 +271,7 @@ public class GamePlayer : MonoBehaviour
 				} else {
 					nextNum = currentNum - 1;
 				}
-			}
-			else {
+			} else {
 				nextNum = currentNum - 1;
 			}
 		}
@@ -337,7 +343,7 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void TweenMoveTo (bool is_quick)
 	{		
-		sceneController.ActiveThreeCamera(gameObject.transform);
+		sceneController.ActiveThreeCamera (gameObject.transform);
 		
 		RemoveBlockPosition ();		
 
@@ -357,8 +363,9 @@ public class GamePlayer : MonoBehaviour
 			"oncomplete", "MovedBlock"));
 	}
 	
-	public void JustMoveTo() {
-		sceneController.ActiveThreeCamera(gameObject.transform);
+	public void JustMoveTo ()
+	{
+		sceneController.ActiveThreeCamera (gameObject.transform);
 		RemoveBlockPosition ();		
 
 		float moving_time = 0.0f;

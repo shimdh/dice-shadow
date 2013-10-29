@@ -37,8 +37,13 @@ public class GameSceneController : MonoBehaviour {
 	public GameObject uiCamera;
 	
 	public float showStateTime = 0.5f;
-	public GameObject battleStateImage;
-	public GameObject monsterStateImage;
+	
+	public GameObject battleStateImage;	
+	public GameObject ladderStateImage;
+	public GameObject comeStateImage;
+	public GameObject goStateImage;
+	public GameObject victoryStateImage;	
+	public GameObject gameOverStateImage;
 	
 
     private void Awake() {

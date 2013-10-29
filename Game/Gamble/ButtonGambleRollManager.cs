@@ -141,6 +141,7 @@ public class ButtonGambleRollManager : MonoBehaviour {
         if (sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount <= 0 )
 		{
 			sceneController.showLabel.text = "Game Over";
+			StartCoroutine("ShowStateImage", sceneController.gameOverStateImage);
 			sceneController.RestartGame();
 		}
 		else {
