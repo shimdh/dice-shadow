@@ -57,7 +57,7 @@ public class ButtonGambleRollManager : MonoBehaviour {
             {
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
                 
-                int move_count = dice_total_number_1 - dice_total_number_0;
+//                int move_count = dice_total_number_1 - dice_total_number_0;
 				
 				StartCoroutine("DisableGamblePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
@@ -82,7 +82,7 @@ public class ButtonGambleRollManager : MonoBehaviour {
             {
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
                 
-                int move_count = dice_total_number_1 - dice_total_number_0;
+//                int move_count = dice_total_number_1 - dice_total_number_0;
 
                 StartCoroutine("DisableGamblePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);

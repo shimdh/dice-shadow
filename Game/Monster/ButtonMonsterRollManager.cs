@@ -54,8 +54,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
 				int fail_player_no = fail_player.targetBlock.visitedPlayers [0];
                 
-				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
-                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
+//				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
+//                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
 				
 				StartCoroutine ("DisableMonsterPanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
@@ -80,8 +80,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
 				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
 				int fail_player_no = fail_player.targetBlock.visitedPlayers [0];
                 
-				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
-                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
+//				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
+//                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
 
 				StartCoroutine ("DisableMonsterPanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);

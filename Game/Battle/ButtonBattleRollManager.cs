@@ -56,8 +56,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
                 
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[1];
                 int win_player_no = fail_player.targetBlock.visitedPlayers[0];
-                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
-                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
+//                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
+//                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
@@ -69,8 +69,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
             {
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
                 int win_player_no = fail_player.targetBlock.visitedPlayers[1];
-                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
-                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
+//                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
+//                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
@@ -89,8 +89,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
             {
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[1];
                 int win_player_no = fail_player.targetBlock.visitedPlayers[0];
-                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
-                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
+//                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
+//                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
@@ -102,8 +102,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
             {
                 int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
                 int win_player_no = fail_player.targetBlock.visitedPlayers[1];
-                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
-                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
+//                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
+//                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
 
 				StartCoroutine("DisableBattlePanel");
 				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
