@@ -60,7 +60,8 @@ public class ButtonGambleRollManager : MonoBehaviour {
                 int move_count = dice_total_number_1 - dice_total_number_0;
 				
 				StartCoroutine("DisableGamblePanel");
-                ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//                ApplyFailPlayer(fail_player_no, move_count);
 
             }
             else if (dice_total_number_0 < dice_total_number_1)
@@ -84,7 +85,8 @@ public class ButtonGambleRollManager : MonoBehaviour {
                 int move_count = dice_total_number_1 - dice_total_number_0;
 
                 StartCoroutine("DisableGamblePanel");
-				ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//				ApplyFailPlayer(fail_player_no, move_count);
             }
             else if (dice_total_number_0 > dice_total_number_1)
             {
@@ -132,6 +134,16 @@ public class ButtonGambleRollManager : MonoBehaviour {
 		}
         sceneController.ApplyMoveDiceFormBattle(move_count, fail_player_no);
     }
+	
+	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
+		sceneController.showLabel.text = "Lost";
+        sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount -= 1;
+        if (sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount <= 0 )
+		{
+			sceneController.showLabel.text = "Finished";
+		}
+		sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no);        
+	}
 	
 	/// <summary>
 	/// Applies the window player.

@@ -58,7 +58,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
                     - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
 				
 				StartCoroutine ("DisableMonsterPanel");
-				ApplyFailPlayer (fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//				ApplyFailPlayer (fail_player_no, move_count);
                 
 
 			} else if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
@@ -83,7 +84,8 @@ public class ButtonMonsterRollManager : MonoBehaviour
                     - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
 
 				StartCoroutine ("DisableMonsterPanel");
-				ApplyFailPlayer (fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//				ApplyFailPlayer (fail_player_no, move_count);
 			} else if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
             > sceneController.monsterPanelManager.battleDices [1].diceTotalNumber) {
 				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
@@ -121,12 +123,23 @@ public class ButtonMonsterRollManager : MonoBehaviour
 	/// <returns></returns>
 	public void ApplyFailPlayer (int fail_player_no, int move_count)
 	{
+		// TODO: 졌을시에 초기로 돌아가기로 변경;
 		sceneController.showLabel.text = "Lost";
 		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
 		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
 			sceneController.showLabel.text = "Finished";
-		}
+		}		
 		sceneController.ApplyMoveDiceFormBattle (move_count, fail_player_no);
+	}
+	
+	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
+		sceneController.showLabel.text = "Lost";
+		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
+		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
+			sceneController.showLabel.text = "Finished";
+		}	
+		
+		sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no);		
 	}
 	
 	/// <summary>

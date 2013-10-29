@@ -246,7 +246,6 @@ public class GamePlayer : MonoBehaviour
 	{
 //		RemoveBlockPosition ();
 		
-		// TODO: 순환블럭이므로 다음블럭의 숫자가 더 작은 숫자일 경우 처리;
 		if (isForward) {
 			if (targetBlock != null) {
 				if (targetBlock.nextFowardBlockNum != -1) {

@@ -158,6 +158,26 @@ public class GameSceneController : MonoBehaviour {
         gamePlayersManager.players[player_no].MovePlayer();
 
     }
+	
+	public void ApplyMoveToStartFromBattle(int current_num, int player_no) {
+		int start_no;
+		
+		if (current_num < 100) {
+			start_no = 0;
+		} else if (current_num < 200) {
+			start_no = 100;
+		} else if (current_num < 300) {
+			start_no = 200;
+		} else {
+			start_no = 300;
+		}
+		
+		DisableBattlePanel();
+		
+		gamePlayersManager.players[player_no].remainMoveCount = 0;
+		gamePlayersManager.players[player_no].nextNum = start_no;
+		gamePlayersManager.players[player_no].TweenMoveTo(true);
+	}
 
 
 

@@ -60,7 +60,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
                     - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-                ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//                ApplyFailPlayer(fail_player_no, move_count);
                 ApplyWinPlayer(win_player_no);
 
             }
@@ -72,7 +73,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
                     - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-                ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//                ApplyFailPlayer(fail_player_no, move_count);
                 ApplyWinPlayer(win_player_no);
 
             }
@@ -91,7 +93,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
                     - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-                ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//                ApplyFailPlayer(fail_player_no, move_count);
                 ApplyWinPlayer(win_player_no);
 
             }
@@ -103,7 +106,8 @@ public class ButtonBattleRollManager : MonoBehaviour {
                     - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
 
 				StartCoroutine("DisableBattlePanel");
-                ApplyFailPlayer(fail_player_no, move_count);
+				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+//                ApplyFailPlayer(fail_player_no, move_count);
                 ApplyWinPlayer(win_player_no);
 
             }
@@ -143,6 +147,16 @@ public class ButtonBattleRollManager : MonoBehaviour {
 			sceneController.showLabel.text = "Finished";
 		}
         sceneController.ApplyMoveDiceFormBattle(move_count, fail_player_no);
+	}
+	
+	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
+		GamePlayer fail_player = sceneController.gamePlayersManager.players[fail_player_no];
+        fail_player.healthTotalCount -= 1;
+        if (fail_player.healthTotalCount <= 0)
+		{
+			sceneController.showLabel.text = "Finished";
+		}
+		sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no);        
 	}
 	
 	/// <summary>
