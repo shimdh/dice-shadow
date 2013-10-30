@@ -13,7 +13,7 @@ public class GameSceneController : MonoBehaviour {
         get {
             if (instance == null) {
                 Debug.LogWarning("No singleton exist! Creating new one.");
-                GameObject owner = new GameObject(DataCenter.gameSceneObjectName);
+                var owner = new GameObject(DataCenter.gameSceneObjectName);
                 instance = owner.AddComponent<GameSceneController>();
             }
             return instance;
