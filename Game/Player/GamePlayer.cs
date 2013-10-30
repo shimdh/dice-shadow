@@ -1,5 +1,4 @@
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
@@ -7,47 +6,39 @@ using System.Collections.Generic;
 /// </summary>
 public class GamePlayer : MonoBehaviour
 {
-	public int playerIndex; // 플레이어의 인덱스;
-	public int remainMoveCount; // 남은 이동할 블럭수;
-	public int currentNum; // 현재 블럭 번호;
-	public int nextNum; // 다음에 이동할 블럭 번호;
-	public bool isForward = true; // 이동방향;
-	public string playerName; // 플레이어 이름;
+	public int PlayerIndex; // 플레이어의 인덱스;
+	public int RemainMoveCount; // 남은 이동할 블럭수;
+	public int CurrentNum; // 현재 블럭 번호;
+	public int NextNum; // 다음에 이동할 블럭 번호;
+	public bool IsForward = true; // 이동방향;
+	public string PlayerName; // 플레이어 이름;
 	
-	public int cardTotal = 3; // 갖고 있는 카드 갯수;
-	public int battleDiceTotalCount; // 총 주사위 갯수;
-	public int healthTotalCount; // HP 토탈 포인트;
-	public List<int> diceNumbers = new List<int> (); // 나온 각 주사위 갯수;
+	public int CardTotal = 3; // 갖고 있는 카드 갯수;
+	public int BattleDiceTotalCount; // 총 주사위 갯수;
+	public int HealthTotalCount; // HP 토탈 포인트;
+	public List<int> DiceNumbers = new List<int> (); // 나온 각 주사위 갯수;
 	
-	public GameCard[] cards = new GameCard[3]; // 소지한 각 카드정보;
+	public GameCard[] Cards = new GameCard[3]; // 소지한 각 카드정보;
 	
-	public GameObject targetBlockObject; // 이동할 블럭 오브젝트;
-	public Block targetBlock; // 이동할 블럭;
+	public GameObject TargetBlockObject; // 이동할 블럭 오브젝트;
+	public Block TargetBlock; // 이동할 블럭;
 
-	public bool gotEvent = false; // 블럭에서의 이벤트 수행여부;
+	public bool GotEvent = false; // 블럭에서의 이벤트 수행여부;
 	
-	public GamePlayerCharacter playerCharacter;
-	private GameSceneController sceneController;
+	public GamePlayerCharacter PlayerCharacter;
+	private GameSceneController _sceneController;
 	
-	void Awake ()
-	{
-		
-	}
+	
 	// Use this for initialization
 	void Start ()
 	{
-		sceneController = GameSceneController.Instance;
-		currentNum = 0;
+		_sceneController = GameSceneController.Instance;
+		CurrentNum = 0;
 		
 		InitCards ();
 		InitHealthTotal ();
 	}
 	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 	
 	/// <summary>
 	/// 이동을 완료했을 때 호출;
@@ -55,41 +46,41 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void MoveCompleted ()
 	{
-		int target_player_no;
+		int targetPlayerNo;
 		
 		RemoveBlockPosition ();
-		targetBlock.visitedPlayers.Add (playerIndex);
+		TargetBlock.VisitedPlayers.Add (PlayerIndex);
 //		targetBlock.visitedPlayers.Add (DataCenter.playerTurnNo);
 		
         
-		if (targetBlock.visitedPlayers.Count == 2) {			
-			if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
-				sceneController.DisableMovePanel ();
+		if (TargetBlock.VisitedPlayers.Count == 2) {			
+			if (_sceneController.MoveManager.MoveDicePanel.activeSelf) {
+				_sceneController.DisableMovePanel ();
 			}            
 			
-			sceneController.ActionStateImage(sceneController.battleStateImage);			
+			_sceneController.ActionStateImage(_sceneController.BattleStateImage);			
 			
-			DataCenter.gameState = DataCenter.GameState.Battled;
+			DataCenter.State = DataCenter.GameState.Battled;
 			Debug.Log ("EnableBattlePanel");
-			sceneController.EnableBattlePanel (targetBlock);
+			_sceneController.EnableBattlePanel (TargetBlock);
 			return;
 		}
 
-		DataCenter.gameState = DataCenter.GameState.Started;
+		DataCenter.State = DataCenter.GameState.Started;
 
-		switch (targetBlock.blockState) {
+		switch (TargetBlock.BlockState) {
 		// 블럭의 종류가 워프일경우;
 			case DataCenter.BlockState.Warp1:
 			case DataCenter.BlockState.Warp2:
 			case DataCenter.BlockState.Warp3:
-				nextNum = targetBlock.warpTargetNo;
+				NextNum = TargetBlock.WarpTargetNo;
 			
 				TweenMoveTo (true);
 				break;
 			case DataCenter.BlockState.RandomBox:
-				if (!gotEvent) {
-					healthTotalCount += 1;
-					gotEvent = true;
+				if (!GotEvent) {
+					HealthTotalCount += 1;
+					GotEvent = true;
 					ChangePlayerTurn ();
 				} else {
 					ChangePlayerTurn ();
@@ -101,84 +92,79 @@ public class GamePlayer : MonoBehaviour
 			case DataCenter.BlockState.Monster:
 				Debug.Log ("DataCenter.BlockState.Monster");
 			
-				if (targetBlock.monsterCard.healthPoint > 0) {
-					gotEvent = true;
-					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
-						sceneController.DisableMovePanel ();
+				if (TargetBlock.MonsterCard.HealthPoint > 0) {
+					GotEvent = true;
+					if (_sceneController.MoveManager.MoveDicePanel.activeSelf) {
+						_sceneController.DisableMovePanel ();
 					}
-					sceneController.ActionStateImage(sceneController.battleStateImage);
+					_sceneController.ActionStateImage(_sceneController.BattleStateImage);
 					
-					DataCenter.gameState = DataCenter.GameState.Monster;
+					DataCenter.State = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
-					sceneController.EnableMonsterPanel (targetBlock);
+					_sceneController.EnableMonsterPanel (TargetBlock);
 
 					return;
-				} else {
-					ChangePlayerTurn ();
 				}
-            
-				break;
+		        ChangePlayerTurn ();
+
+		        break;
 				
 			case DataCenter.BlockState.Keeper:
-				if (targetBlock.monsterCard.healthPoint > 0) {
-					gotEvent = true;
-					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
-						sceneController.DisableMovePanel ();
+				if (TargetBlock.MonsterCard.HealthPoint > 0) {
+					GotEvent = true;
+					if (_sceneController.MoveManager.MoveDicePanel.activeSelf) {
+						_sceneController.DisableMovePanel ();
 					}
-					sceneController.ActionStateImage(sceneController.battleStateImage);					
+					_sceneController.ActionStateImage(_sceneController.BattleStateImage);					
 					
-					DataCenter.gameState = DataCenter.GameState.Monster;
+					DataCenter.State = DataCenter.GameState.Monster;
 					Debug.Log ("EnableMonsterPanel");
-					sceneController.EnableMonsterPanel (targetBlock);
+					_sceneController.EnableMonsterPanel (TargetBlock);
 
 					return;
-				} else {
-					ChangePlayerTurn ();
 				}
-            
-				break;
+		        ChangePlayerTurn ();
+
+		        break;
 			case DataCenter.BlockState.Gamble:
-				if (!gotEvent) {
-					gotEvent = true;
-					if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
-						sceneController.DisableMovePanel ();
+				if (!GotEvent) {
+					GotEvent = true;
+					if (_sceneController.MoveManager.MoveDicePanel.activeSelf) {
+						_sceneController.DisableMovePanel ();
 					}
-					DataCenter.gameState = DataCenter.GameState.Gamble;
+					DataCenter.State = DataCenter.GameState.Gamble;
 				
-					sceneController.EnableGamblePanel (targetBlock);
+					_sceneController.EnableGamblePanel (TargetBlock);
 
 					return;
-				} else {
-					ChangePlayerTurn ();
-					break;
 				}
-				
-			case DataCenter.BlockState.Ladder:
-				if (playerCharacter.Level >= targetBlock.levelLadder) {
-					if (!gotEvent) {
-						gotEvent = true;
-						if (sceneController.movePanelManager.moveDicePanel.activeSelf) {
-							sceneController.DisableMovePanel ();
+		        ChangePlayerTurn ();
+		        break;
+
+		    case DataCenter.BlockState.Ladder:
+				if (PlayerCharacter.Level >= TargetBlock.LevelLadder) {
+					if (!GotEvent) {
+						GotEvent = true;
+						if (_sceneController.MoveManager.MoveDicePanel.activeSelf) {
+							_sceneController.DisableMovePanel ();
 						}
-						sceneController.ActionStateImage(sceneController.ladderStateImage);
+						_sceneController.ActionStateImage(_sceneController.LadderStateImage);
 						
-						DataCenter.gameState = DataCenter.GameState.Ladder;
-						sceneController.EnableMonsterPanel (targetBlock);
-						return;
-					} else {
-						nextNum = targetBlock.goNumberLadder;
-						TweenMoveTo (true);
+						DataCenter.State = DataCenter.GameState.Ladder;
+						_sceneController.EnableMonsterPanel (TargetBlock);
 						return;
 					}
-				} else {
-					ChangePlayerTurn ();
-					break;
+				    NextNum = TargetBlock.GoNumberLadder;
+				    TweenMoveTo (true);
+				    return;
 				}
-			case DataCenter.BlockState.RuleLow:
-				if (!gotEvent) {
-					gotEvent = true;
-					DataCenter.battleDiceRule = DataCenter.BattleDiceRule.Low;
-					DataCenter.battleRuleRemainTurn = 3;
+		        ChangePlayerTurn ();
+		        break;
+		    case DataCenter.BlockState.RuleLow:
+				if (!GotEvent) {
+					GotEvent = true;
+					DataCenter.BattleRule = DataCenter.BattleDiceRule.Low;
+					DataCenter.BattleRuleRemainTurn = 3;
 	            
 					ChangePlayerTurn ();
 				} else {
@@ -186,66 +172,64 @@ public class GamePlayer : MonoBehaviour
 				}
 				break;
 			case DataCenter.BlockState.ComeHere:
-				if (!gotEvent) {
-					gotEvent = true;
-					target_player_no = playerIndex + 1;
+				if (!GotEvent) {
+					GotEvent = true;
+					targetPlayerNo = PlayerIndex + 1;
 					//			target_player_no = DataCenter.playerTurnNo + 1;
-					if (target_player_no >= DataCenter.playerCount) {
-						target_player_no = 0;
+					if (targetPlayerNo >= DataCenter.PlayerCount) {
+						targetPlayerNo = 0;
 					}
 					//			ChangePlayerTurn();
 					//			sceneController.GamePlayersManager.players[target_player_no].RemoveBlockPosition();
-					//			sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
-					//			sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
+					//			sceneController.PlayersManager.players [target_player_no].nextNum = currentNum;
+					//			sceneController.PlayersManager.players [target_player_no].TweenMoveTo (true);
 				
-					sceneController.ActionStateImage(sceneController.comeStateImage);
+					_sceneController.ActionStateImage(_sceneController.ComeStateImage);
 					
-					sceneController.gamePlayersManager.players [target_player_no].RemoveBlockPosition ();
-					sceneController.gamePlayersManager.players [target_player_no].nextNum = currentNum;
-					sceneController.gamePlayersManager.players [target_player_no].TweenMoveTo (true);
+					_sceneController.PlayersManager.Players [targetPlayerNo].RemoveBlockPosition ();
+					_sceneController.PlayersManager.Players [targetPlayerNo].NextNum = CurrentNum;
+					_sceneController.PlayersManager.Players [targetPlayerNo].TweenMoveTo (true);
 					return;
-				} else {
-					ChangePlayerTurn ();
-					break;
 				}
-            
+		        ChangePlayerTurn ();
+		        break;
+
 //			break;
 			case DataCenter.BlockState.ImGoing:
-				if (!gotEvent) {
-					gotEvent = true;
-					target_player_no = playerIndex + 1;
+				if (!GotEvent) {
+					GotEvent = true;
+					targetPlayerNo = PlayerIndex + 1;
 					//			target_player_no = DataCenter.playerTurnNo + 1;
-					if (target_player_no >= DataCenter.playerCount) {
-						target_player_no = 0;
+					if (targetPlayerNo >= DataCenter.PlayerCount) {
+						targetPlayerNo = 0;
 					}
 					//			ChangePlayerTurn();
-					sceneController.ActionStateImage(sceneController.goStateImage);
+					_sceneController.ActionStateImage(_sceneController.GoStateImage);
 					
-					nextNum = sceneController.gamePlayersManager.players [target_player_no].currentNum;
+					NextNum = _sceneController.PlayersManager.Players [targetPlayerNo].CurrentNum;
 					TweenMoveTo (true);
 					return;
-				} else {
-					ChangePlayerTurn ();
-					break;
 				}
+		        ChangePlayerTurn ();
+		        break;
 //			break;
 			default: // 나머지 블럭일 경우;
 				ChangePlayerTurn ();
 				break;
 		}
 
-		DataCenter.battleRuleRemainTurn -= 1;
-		if (DataCenter.battleRuleRemainTurn <= 0) {
-			DataCenter.battleRuleRemainTurn = 0;
-			DataCenter.battleDiceRule = DataCenter.BattleDiceRule.High;
+		DataCenter.BattleRuleRemainTurn -= 1;
+		if (DataCenter.BattleRuleRemainTurn <= 0) {
+			DataCenter.BattleRuleRemainTurn = 0;
+			DataCenter.BattleRule = DataCenter.BattleDiceRule.High;
 		}
 
-		if (DataCenter.GameState.Started == DataCenter.gameState) {
+		if (DataCenter.GameState.Started == DataCenter.State) {
 			Debug.Log ("EnableMovePanel");
-			sceneController.EnableMovePanel ();
+			_sceneController.EnableMovePanel ();
 		}
 		
-		isForward = true;
+		IsForward = true;
 		
 	}
 	
@@ -257,25 +241,25 @@ public class GamePlayer : MonoBehaviour
 	{
 //		RemoveBlockPosition ();
 		
-		if (isForward) {
-			if (targetBlock != null) {
-				if (targetBlock.nextFowardBlockNum != -1) {
-					nextNum = targetBlock.nextFowardBlockNum;
+		if (IsForward) {
+			if (TargetBlock != null) {
+				if (TargetBlock.NextFowardBlockNum != -1) {
+					NextNum = TargetBlock.NextFowardBlockNum;
 				} else {
-					nextNum = currentNum + 1;
+					NextNum = CurrentNum + 1;
 				}
 			} else {
-				nextNum = currentNum + 1;
+				NextNum = CurrentNum + 1;
 			}
 		} else {
-			if (targetBlock != null) {
-				if (targetBlock.nextReverseBlockNum != -1) {
-					nextNum = targetBlock.nextReverseBlockNum;
+			if (TargetBlock != null) {
+				if (TargetBlock.NextReverseBlockNum != -1) {
+					NextNum = TargetBlock.NextReverseBlockNum;
 				} else {
-					nextNum = currentNum - 1;
+					NextNum = CurrentNum - 1;
 				}
 			} else {
-				nextNum = currentNum - 1;
+				NextNum = CurrentNum - 1;
 			}
 		}
 		//Debug.Log ("nextNum: " + nextNum.ToString ());
@@ -288,38 +272,38 @@ public class GamePlayer : MonoBehaviour
 	/// </summary>
 	public void MovedBlock ()
 	{
-		remainMoveCount -= 1;
+		RemainMoveCount -= 1;
 		//Debug.Log ("remainMoveCount: " + remainMoveCount.ToString ());
 		
-		targetBlock = targetBlockObject.GetComponent<Block> ();
+		TargetBlock = TargetBlockObject.GetComponent<Block> ();
 		
-		if (targetBlock.bonusExpPoint > 0 && isForward) {
-			playerCharacter.Experience += targetBlock.bonusExpPoint;
+		if (TargetBlock.BonusExpPoint > 0 && IsForward) {
+			PlayerCharacter.Experience += TargetBlock.BonusExpPoint;
 		}
 
-		if (targetBlock.blockState == DataCenter.BlockState.Goal) { // 골 블럭이면 종료;
-			sceneController.showLabel.text = "Finished";
+		if (TargetBlock.BlockState == DataCenter.BlockState.Goal) { // 골 블럭이면 종료;
+			_sceneController.ShowLabel.text = "Finished";
 			return;
 		}
 		
-		if (targetBlock.blockState == DataCenter.BlockState.Keeper && targetBlock.monsterCard.healthPoint > 0) {
-			remainMoveCount = 0;
+		if (TargetBlock.BlockState == DataCenter.BlockState.Keeper && TargetBlock.MonsterCard.HealthPoint > 0) {
+			RemainMoveCount = 0;
 		}
 		
-		if (targetBlock.blockState == DataCenter.BlockState.Start) {
-			remainMoveCount = 0;
+		if (TargetBlock.BlockState == DataCenter.BlockState.Start) {
+			RemainMoveCount = 0;
 		}
 
-		if (targetBlock.blockState == DataCenter.BlockState.Battle) { // 현재 방문한 블럭이 전투블럭이고
-			if (targetBlock.visitedPlayers.Count > 0) { // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
-				remainMoveCount = 0;
+		if (TargetBlock.BlockState == DataCenter.BlockState.Battle) { // 현재 방문한 블럭이 전투블럭이고
+			if (TargetBlock.VisitedPlayers.Count > 0) { // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
+				RemainMoveCount = 0;
 			}
 		}
         
-		currentNum = nextNum;
+		CurrentNum = NextNum;
 		
-		if (remainMoveCount <= 0) {
-			remainMoveCount = 0;
+		if (RemainMoveCount <= 0) {
+			RemainMoveCount = 0;
 			MoveCompleted ();
 		} else {
 			MovePlayer ();
@@ -332,56 +316,56 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void ChangePlayerTurn ()
 	{
-		playerCharacter.Experience += targetBlock.expPoint;
-		DataCenter.playerTurnNo += 1;
-		if (DataCenter.playerTurnNo >= DataCenter.playerCount) {
-			DataCenter.playerTurnNo = 0;
+		PlayerCharacter.Experience += TargetBlock.ExpPoint;
+		DataCenter.PlayerTurnNo += 1;
+		if (DataCenter.PlayerTurnNo >= DataCenter.PlayerCount) {
+			DataCenter.PlayerTurnNo = 0;
 		}
 	}
 	
 	/// <summary>
 	/// 실제 플레이어를 이동;
 	/// </summary>
-	/// <param name="is_quick">시간지체 여부;</param>
+	/// <param name="isQuick">시간지체 여부;</param>
 	/// <returns></returns>
-	public void TweenMoveTo (bool is_quick)
+	public void TweenMoveTo (bool isQuick)
 	{		
-		sceneController.ActiveThreeCamera (gameObject.transform);
+		_sceneController.ActiveThreeCamera (gameObject.transform);
 		
 		RemoveBlockPosition ();		
 
-		float moving_time = 0.5f;
-		if (is_quick) {
-			moving_time = 0.0f;
+		var movingTime = 0.5f;
+		if (isQuick) {
+			movingTime = 0.0f;
 		}
 
-		gotEvent = false;
+		GotEvent = false;
 
 		SetTargetBlockObject ();
 		
 		iTween.MoveTo (gameObject, iTween.Hash ("position", 
-			new Vector3 (targetBlockObject.transform.position.x, 
+			new Vector3 (TargetBlockObject.transform.position.x, 
 				transform.position.y, 
-				targetBlockObject.transform.position.z), "time", moving_time,
+				TargetBlockObject.transform.position.z), "time", movingTime,
 			"oncomplete", "MovedBlock"));
 	}
 	
 	public void JustMoveTo ()
 	{
-		sceneController.ActiveThreeCamera (gameObject.transform);
+		_sceneController.ActiveThreeCamera (gameObject.transform);
 		RemoveBlockPosition ();		
 
-		float moving_time = 0.0f;
+		const float movingTime = 0.0f;
 		
 
-		gotEvent = false;
+		GotEvent = false;
 
 		SetTargetBlockObject ();
 		
 		iTween.MoveTo (gameObject, iTween.Hash ("position", 
-			new Vector3 (targetBlockObject.transform.position.x, 
+			new Vector3 (TargetBlockObject.transform.position.x, 
 				transform.position.y, 
-				targetBlockObject.transform.position.z), "time", moving_time));
+				TargetBlockObject.transform.position.z), "time", movingTime));
 	}
 	
 	/// <summary>
@@ -390,25 +374,23 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void SetTargetBlockObject ()
 	{
-		string str_num = string.Format ("{0:000}", nextNum);
-		targetBlockObject = GameObject.Find (DataCenter.hexPrefix + str_num);
+		var strNum = string.Format ("{0:000}", NextNum);
+		TargetBlockObject = GameObject.Find (DataCenter.HexPrefix + strNum);
 	}
 	
 	/// <summary>
 	/// 전투시에 쓰이는 주사위 초기화;
 	/// </summary>
-	/// <param name="battle_kind">전투의 종류</param>
+	/// <param name="battleKind">전투의 종류</param>
 	/// <returns></returns>
-	public void InitBattleDiceTotal (int battle_kind)
+	public void InitBattleDiceTotal (int battleKind)
 	{
-		switch (battle_kind) {
+		switch (battleKind) {
 			case 0:
 				InitDefenceDiceTotal ();
 				break;
 			case 1:
 				InitAttackDiceTotal ();
-				break;
-			default:
 				break;
 		}
 	}
@@ -419,13 +401,13 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void InitAttackDiceTotal ()
 	{
-		battleDiceTotalCount = 0;
-		for (int i = 0; i < 3; i++) {
-			battleDiceTotalCount += cards [i].attackDiceCount;
+		BattleDiceTotalCount = 0;
+		for (var i = 0; i < 3; i++) {
+			BattleDiceTotalCount += Cards [i].AttackDiceCount;
 		}
 		
-		if (battleDiceTotalCount > 10) {
-			battleDiceTotalCount = 10;
+		if (BattleDiceTotalCount > 10) {
+			BattleDiceTotalCount = 10;
 		}
 	}
 	
@@ -435,13 +417,13 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void InitDefenceDiceTotal ()
 	{
-		battleDiceTotalCount = 0;
-		for (int i = 0; i < 3; i++) {
-			battleDiceTotalCount += cards [i].defenceDiceCount;
+		BattleDiceTotalCount = 0;
+		for (var i = 0; i < 3; i++) {
+			BattleDiceTotalCount += Cards [i].DefenceDiceCount;
 		}
 		
-		if (battleDiceTotalCount > 10) {
-			battleDiceTotalCount = 10;
+		if (BattleDiceTotalCount > 10) {
+			BattleDiceTotalCount = 10;
 		}
 	}
 	
@@ -451,9 +433,9 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void InitHealthTotal ()
 	{
-		healthTotalCount = 0;
-		for (int i = 0; i < 3; i++) {
-			healthTotalCount += cards [i].healthPoint;
+		HealthTotalCount = 0;
+		for (var i = 0; i < 3; i++) {
+			HealthTotalCount += Cards [i].HealthPoint;
 		}
 	}
 	
@@ -463,9 +445,9 @@ public class GamePlayer : MonoBehaviour
 	/// <returns></returns>
 	public void InitCards ()
 	{
-		for (int i = 0; i < 3; i++) {
-			cards [i] = new GameCard ();
-			cards [i].GeneratePoint ();
+		for (var i = 0; i < 3; i++) {
+			Cards [i] = new GameCard ();
+			Cards [i].GeneratePoint ();
 		}
 	}
 	
@@ -474,7 +456,7 @@ public class GamePlayer : MonoBehaviour
 	/// </summary>
 	public void UpdatePlayerName ()
 	{
-		playerName = gameObject.name;
+		PlayerName = gameObject.name;
 	}
 	
 	/// <summary>
@@ -482,10 +464,9 @@ public class GamePlayer : MonoBehaviour
 	/// </summary>
 	public void RemoveBlockPosition ()
 	{
-		if (targetBlock != null && targetBlock.visitedPlayers.Count > 0) {
-			if (targetBlock.visitedPlayers.Contains (playerIndex)) {
-				targetBlock.visitedPlayers.Remove (playerIndex);
-			}
-		}
+	    if (TargetBlock == null || TargetBlock.VisitedPlayers.Count <= 0) return;
+	    if (TargetBlock.VisitedPlayers.Contains (PlayerIndex)) {
+	        TargetBlock.VisitedPlayers.Remove (PlayerIndex);
+	    }
 	}
 }

@@ -1,35 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Move player name.
 /// </summary>
 public class MovePlayerName : MonoBehaviour {
-    private UILabel playerNameLabel;
+    private UILabel _playerNameLabel;
 
     void Awake()
     {
-        playerNameLabel = gameObject.GetComponent<UILabel>();
+        _playerNameLabel = gameObject.GetComponent<UILabel>();
     }
 
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	/// <summary>
 	/// Updates the name label.
 	/// </summary>
-	/// <param name='player_name'>
+	/// <param name='playerName'>
 	/// Player_name.
 	/// </param>
-    public void UpdateNameLabel(string player_name)
+    public void UpdateNameLabel(string playerName)
     {   
-        playerNameLabel.text = player_name;
+        _playerNameLabel.text = playerName;
     }
 }

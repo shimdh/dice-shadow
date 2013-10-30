@@ -1,25 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Gemble panel manager.
 /// </summary>
-public class GamblePanelManager : MonoBehaviour {
-	public GameObject gamblePanel;
-    public BattleDices[] battleDices;
-
-	// Use this for initialization
-    void Start()
-    {
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+public class GamblePanelManager : MonoBehaviour
+{
+    public GameObject GamblePanel;
+    public BattleDices[] BattleDices;
 
 
     /// <summary>
@@ -28,9 +15,9 @@ public class GamblePanelManager : MonoBehaviour {
     /// <returns></returns>
     public void DisableAllGambleDices()
     {
-        for (int i = 0; i < battleDices.Length; i++)
+        foreach (var t in BattleDices)
         {
-            battleDices[i].DisableAllDices();
+            t.DisableAllDices();
         }
     }
 
@@ -38,14 +25,14 @@ public class GamblePanelManager : MonoBehaviour {
     /// <summary>
     /// 유효한 주사위 오브젝트들만 활성화;
     /// </summary>
-    /// <param name="dice_count">각 주사위 갯수;</param>
+    /// <param name="diceCount">각 주사위 갯수;</param>
     /// <returns></returns>
-    public void ActiveValidGambleDices(int[] dice_count)
+    public void ActiveValidGambleDices(int[] diceCount)
     {
-        for (int i = 0; i < battleDices.Length; i++)
+        for (var i = 0; i < BattleDices.Length; i++)
         {
-            battleDices[i].ActiveValidDices(dice_count[i]);
-            battleDices[i].ResetValidDices();
+            BattleDices[i].ActiveValidDices(diceCount[i]);
+            BattleDices[i].ResetValidDices();
         }
     }
 
@@ -57,7 +44,7 @@ public class GamblePanelManager : MonoBehaviour {
     public void ActiveGamblePanel()
     {
         Debug.Log("ActiveGemblePanel");
-        gamblePanel.SetActive(true);
+        GamblePanel.SetActive(true);
         DisableAllGambleDices();
     }
 }

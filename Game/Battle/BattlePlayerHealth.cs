@@ -1,45 +1,35 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 
 /// <summary>
 /// 배틀 패널에서의 생명 포인트 관리;
 /// </summary>
 public class BattlePlayerHealth : MonoBehaviour {
-    public int healthCount;
-    private UILabel healthCountLabel;
+    public int HealthCount;
+    private UILabel _healthCountLabel;
 
     void Awake()
     {
-        healthCountLabel = gameObject.GetComponent<UILabel>();
-    }
-
-	// Use this for initialization
-	void Start () {
-//        UpdateHealthPoint(0);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
+        _healthCountLabel = gameObject.GetComponent<UILabel>();
     }
 
     
     /// <summary>
     /// 정해진 생명 포인트를 라벨에 적용;
     /// </summary>
-    /// <param name="hp_count">생명 포인트;</param>
+    /// <param name="hpCount">생명 포인트;</param>
     /// <returns></returns>
-    public void UpdateHealthPoint(int hp_count)
+    public void UpdateHealthPoint(int hpCount)
     {
-        if (healthCountLabel == null)
+        if (_healthCountLabel == null)
         {
-            healthCountLabel = gameObject.GetComponent<UILabel>();
+            _healthCountLabel = gameObject.GetComponent<UILabel>();
         }
-        healthCount = hp_count;
-		
-		Debug.Log("healthCount: " + healthCount.ToString());
+        HealthCount = hpCount;
 
-        healthCountLabel.text = healthCount.ToString();
+        Debug.Log("healthCount: " + Convert.ToString(HealthCount));
+
+        _healthCountLabel.text = Convert.ToString(HealthCount);
     }
 }

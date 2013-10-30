@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [System.Serializable]
 public class GamePlayerCharacter {	
 	[SerializeField]
-	private int experience;
+	private int _experience;
 	
 	public int Experience {
 		get {
-			return experience;
+			return _experience;
 		}
 		
 		set {
-			experience = value;					
+			_experience = value;					
 			
-			if (experience >= DataCenter.playerLevel[DataCenter.playerLevel.Length-1]) {
-				level = DataCenter.playerLevel.Length + 1;
+			if (_experience >= DataCenter.PlayerLevel[DataCenter.PlayerLevel.Length-1]) {
+				_level = DataCenter.PlayerLevel.Length + 1;
 			}
 			else {
-				for (int i = 0; i < DataCenter.playerLevel.Length; i++) {
-					if (experience < DataCenter.playerLevel[i]) {
-						level = i+1;
-						break;
-					}
+				for (var i = 0; i < DataCenter.PlayerLevel.Length; i++) {
+				    if (_experience >= DataCenter.PlayerLevel[i]) continue;
+				    _level = i+1;
+				    break;
 				}	
 			}
 			
@@ -30,31 +28,31 @@ public class GamePlayerCharacter {
 	}
 	
 	[SerializeField]
-	private int level;
+	private int _level;
 	
 	public int Level {
 		get	{
-			return level;
+			return _level;
 		}
 		set	{
-			level = value;
+			_level = value;
 		}
 	}
 	
 	public GamePlayerCharacter ()
 	{
-		experience = 0;
-		level = 1;
+		_experience = 0;
+		_level = 1;
 	}
 	
-	private int healthPoint;
+	private int _healthPoint;
 	
 	public int HealthPoint {
 		get {
-			return healthPoint;
+			return _healthPoint;
 		}
 		set {
-			healthPoint = value;
+			_healthPoint = value;
 		}
 	}
 }

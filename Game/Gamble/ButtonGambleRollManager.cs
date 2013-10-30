@@ -4,25 +4,15 @@ using System.Collections;
 /// <summary>
 /// Button gemble roll manager.
 /// </summary>
-public class ButtonGambleRollManager : MonoBehaviour {
+public class ButtonGambleRollManager : MonoBehaviour
+{
 
-	private GameSceneController sceneController;
-
-    void Awake()
-    {
-        
-    }
+    private GameSceneController _sceneController;
 
     // Use this for initialization
     void Start()
     {
-		sceneController = GameSceneController.Instance;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _sceneController = GameSceneController.Instance;
     }
 
 
@@ -35,69 +25,61 @@ public class ButtonGambleRollManager : MonoBehaviour {
         GambleRoll();
 
         StartCoroutine("ApplyGambleResult");
-        
+
     }
-	
-	/// <summary>
-	/// Applies the monster result.
-	/// </summary>
-	/// <returns>
-	/// The monster result.
-	/// </returns>
+
+    /// <summary>
+    /// Applies the monster result.
+    /// </summary>
+    /// <returns>
+    /// The monster result.
+    /// </returns>
     public IEnumerator ApplyGambleResult()
     {
         yield return new WaitForSeconds(2.0f);
-		int dice_total_number_0 = sceneController.gamblePanelManager.battleDices[0].diceTotalNumber;
-		int dice_total_number_1 = sceneController.gamblePanelManager.battleDices[1].diceTotalNumber;
-		GamePlayer fail_player = sceneController.gamePlayersManager.players[DataCenter.playerTurnNo];
+        var diceTotalNumber0 = _sceneController.GambleManager.BattleDices[0].DiceTotalNumber;
+        var diceTotalNumber1 = _sceneController.GambleManager.BattleDices[1].DiceTotalNumber;
+        var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
 
-        if (DataCenter.battleDiceRule == DataCenter.BattleDiceRule.High)
+        if (DataCenter.BattleRule == DataCenter.BattleDiceRule.High)
         {
-            if (dice_total_number_0 > dice_total_number_1)
+            if (diceTotalNumber0 > diceTotalNumber1)
             {
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
-                
-//                int move_count = dice_total_number_1 - dice_total_number_0;
-				
-				StartCoroutine("DisableGamblePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
-//                ApplyFailPlayer(fail_player_no, move_count);
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+
+                //                int move_count = dice_total_number_1 - dice_total_number_0;
+
+                StartCoroutine("DisableGamblePanel");
+                ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
+                //                ApplyFailPlayer(fail_player_no, move_count);
 
             }
-            else if (dice_total_number_0 < dice_total_number_1)
-            {   
-                int win_player_no = fail_player.targetBlock.visitedPlayers[0];
-                
-				StartCoroutine("DisableGamblePanel");
-				ApplyWinPlayer(win_player_no);
-            }
-            else
+            else if (diceTotalNumber0 < diceTotalNumber1)
             {
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
 
+                StartCoroutine("DisableGamblePanel");
+                ApplyWinPlayer(winPlayerNo);
             }
         }
         else
         {
-            if (dice_total_number_0 < dice_total_number_1)
+            if (diceTotalNumber0 < diceTotalNumber1)
             {
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
-                
-//                int move_count = dice_total_number_1 - dice_total_number_0;
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+
+                //                int move_count = dice_total_number_1 - dice_total_number_0;
 
                 StartCoroutine("DisableGamblePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
-//				ApplyFailPlayer(fail_player_no, move_count);
+                ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
+                //				ApplyFailPlayer(fail_player_no, move_count);
             }
-            else if (dice_total_number_0 > dice_total_number_1)
+            else if (diceTotalNumber0 > diceTotalNumber1)
             {
-                int win_player_no = fail_player.targetBlock.visitedPlayers[0];
+                int winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
 
                 StartCoroutine("DisableGamblePanel");
-				ApplyWinPlayer(win_player_no);
-
-            }
-            else
-            {
+                ApplyWinPlayer(winPlayerNo);
 
             }
         }
@@ -111,9 +93,9 @@ public class ButtonGambleRollManager : MonoBehaviour {
     public void GambleRoll()
     {
         Debug.Log("GambleRoll");
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
-            sceneController.gamblePanelManager.battleDices[i].RollDices();
+            _sceneController.GambleManager.BattleDices[i].RollDices();
         }
     }
 
@@ -121,60 +103,62 @@ public class ButtonGambleRollManager : MonoBehaviour {
     /// <summary>
     /// 진 플레이어를 주사위 차만큼 뒤로 이동;
     /// </summary>
-    /// <param name="fail_player_no"></param>
-    /// <param name="move_count"></param>
+    /// <param name="failPlayerNo"></param>
+    /// <param name="moveCount"></param>
     /// <returns></returns>
-    public void ApplyFailPlayer(int fail_player_no, int move_count)
+    public void ApplyFailPlayer(int failPlayerNo, int moveCount)
     {
-        sceneController.showLabel.text = "Lost";
-        sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount -= 1;
-        if (sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount <= 0 )
-		{
-			sceneController.showLabel.text = "Finished";
-		}
-        sceneController.ApplyMoveDiceFormBattle(move_count, fail_player_no);
+        _sceneController.ShowLabel.text = "Lost";
+        _sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount -= 1;
+        if (_sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount <= 0)
+        {
+            _sceneController.ShowLabel.text = "Finished";
+        }
+        _sceneController.ApplyMoveDiceFormBattle(moveCount, failPlayerNo);
     }
-	
-	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
-		sceneController.showLabel.text = "Lost";
-        sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount -= 1;
-        if (sceneController.gamePlayersManager.players[fail_player_no].healthTotalCount <= 0 )
-		{
-			sceneController.showLabel.text = "Game Over";
-			sceneController.ActionStateImage(sceneController.gameOverStateImage);			
-			sceneController.RestartGame();
-		}
-		else {
-			sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no); 
-		}
-		       
-	}
-	
-	/// <summary>
-	/// Applies the window player.
-	/// </summary>
-	/// <param name='win_player_no'>
-	/// Win_player_no.
-	/// </param>
-    public void ApplyWinPlayer(int win_player_no)
+
+    public void ApplyFailToMoveStart(int failPlayerNo, int currentNo)
     {
-        sceneController.showLabel.text = "Win";
-		GamePlayer win_player = sceneController.gamePlayersManager.players[win_player_no];
-		Debug.Log("Gamble.ApplyWinPlayer");
-		win_player.targetBlock.monsterCard.healthPoint -= 1;
-		
-		win_player.MoveCompleted();
+        _sceneController.ShowLabel.text = "Lost";
+        _sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount -= 1;
+        if (_sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount <= 0)
+        {
+            _sceneController.ShowLabel.text = "Game Over";
+            _sceneController.ActionStateImage(_sceneController.GameOverStateImage);
+            _sceneController.RestartGame();
+        }
+        else
+        {
+            _sceneController.ApplyMoveToStartFromBattle(currentNo, failPlayerNo);
+        }
+
     }
-	
-	/// <summary>
-	/// Disables the monster panel.
-	/// </summary>
-	/// <returns>
-	/// The monster panel.
-	/// </returns>
-	public IEnumerator DisableGamblePanel()
-	{
-		yield return new WaitForSeconds(0.2f);
-		sceneController.DisableGamblePanel();
-	}
+
+    /// <summary>
+    /// Applies the window player.
+    /// </summary>
+    /// <param name='winPlayerNo'>
+    /// Win_player_no.
+    /// </param>
+    public void ApplyWinPlayer(int winPlayerNo)
+    {
+        _sceneController.ShowLabel.text = "Win";
+        var winPlayer = _sceneController.PlayersManager.Players[winPlayerNo];
+        Debug.Log("Gamble.ApplyWinPlayer");
+        winPlayer.TargetBlock.MonsterCard.HealthPoint -= 1;
+
+        winPlayer.MoveCompleted();
+    }
+
+    /// <summary>
+    /// Disables the monster panel.
+    /// </summary>
+    /// <returns>
+    /// The monster panel.
+    /// </returns>
+    public IEnumerator DisableGamblePanel()
+    {
+        yield return new WaitForSeconds(0.2f);
+        _sceneController.DisableGamblePanel();
+    }
 }

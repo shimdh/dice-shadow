@@ -1,6 +1,3 @@
-using UnityEngine;
-using System.Collections;
-
 /// <summary>
 /// 게임내에 공통적으로 쓰이는 데이터 관리;
 /// </summary>
@@ -59,18 +56,18 @@ public static class DataCenter
 
 	#endregion
 
-	public static int playerCount = 2; // 현재 게임중인 플레이어 수;
-    public static int moveAllDiceCount = 3; // 화면에 있는 전체 이동 주사위 갯수(안보이는 것도 포함);
-    public static int moveDiceCount = 1; // 이동 주사위의 갯수;
-	public static int playerTurnNo = 0; // 현재 게임 진행중인 플레이어 인덱스;
-	public static GameState gameState = GameState.Idle; // 현재 게임의 상태;
-    public static BattleDiceRule battleDiceRule = BattleDiceRule.High; // 현재 진행중인 게임의 배틀시 주사위 룰;
-    public static int battleRuleRemainTurn = 0;
+	public static int PlayerCount = 2; // 현재 게임중인 플레이어 수;
+    public static int MoveAllDiceCount = 3; // 화면에 있는 전체 이동 주사위 갯수(안보이는 것도 포함);
+    public static int MoveDiceCount = 1; // 이동 주사위의 갯수;
+	public static int PlayerTurnNo = 0; // 현재 게임 진행중인 플레이어 인덱스;
+	public static GameState State = GameState.Idle; // 현재 게임의 상태;
+    public static BattleDiceRule BattleRule = BattleDiceRule.High; // 현재 진행중인 게임의 배틀시 주사위 룰;
+    public static int BattleRuleRemainTurn = 0;
 
-	public const string gameSceneObjectName = "go_SceneManager"; // 게임씬 매니저의 이름;
-	public const string hexPrefix = "hex_tile_"; // 블럭 이름을 가져올 접두어;
-	public static int[] blockCount = new int[3]{20, 10, 10};
-	public static int[] playerLevel = new int[9]{
-		100, 200, 300, 400, 500, 600, 700, 800, 900};
+	public const string GameSceneObjectName = "go_SceneManager"; // 게임씬 매니저의 이름;
+	public const string HexPrefix = "hex_tile_"; // 블럭 이름을 가져올 접두어;
+	public static int[] BlockCount = {20, 10, 10};
+	public static int[] PlayerLevel = {
+	    100, 200, 300, 400, 500, 600, 700, 800, 900};
 	
 }

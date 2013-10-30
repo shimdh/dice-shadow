@@ -17,7 +17,7 @@ public class BlockEditManager : MonoBehaviour
 	void Start ()
 	{
 		
-		block.blockState = blockState;
+		block.BlockState = blockState;
 
 	}
 	
@@ -28,7 +28,7 @@ public class BlockEditManager : MonoBehaviour
 		if (blockTextureManager == null) return;
 		if (blockTextureManager.BlockTextures.Length <= (int)blockState) return;
 		renderer.material.mainTexture = blockTextureManager.BlockTextures[(int)blockState];
-		block.blockState = blockState;
+		block.BlockState = blockState;
 	}
 #endif
 }

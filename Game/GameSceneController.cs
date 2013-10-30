@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,64 +8,63 @@ using System.Collections.Generic;
 /// </summary>
 public class GameSceneController : MonoBehaviour {
 
-    private static GameSceneController instance;
+    private static GameSceneController _instance;
 
     public static GameSceneController Instance {
         get {
-            if (instance == null) {
-                Debug.LogWarning("No singleton exist! Creating new one.");
-                var owner = new GameObject(DataCenter.gameSceneObjectName);
-                instance = owner.AddComponent<GameSceneController>();
-            }
-            return instance;
+            if (_instance != null) return _instance;
+            Debug.LogWarning("No singleton exist! Creating new one.");
+            var owner = new GameObject(DataCenter.GameSceneObjectName);
+            _instance = owner.AddComponent<GameSceneController>();
+            return _instance;
         }
     }
 
     #region Manger Objects
-    public MovePanelManager movePanelManager;
-    public BattlePanelManager battlePanelManager;
-    public MonsterPanelManager monsterPanelManager;
-    public GamblePanelManager gamblePanelManager;
-	public GamePlayersManager gamePlayersManager;
+    public MovePanelManager MoveManager;
+    public BattlePanelManager BattleManager;
+    public MonsterPanelManager MonsterManager;
+    public GamblePanelManager GambleManager;
+	public GamePlayersManager PlayersManager;
     #endregion
 	
-	public CameraMove camMove;
-    public UILabel showLabel;
-	public Transform camPivotTr;
-	public Vector3 camPivotLocation;
-	public GameObject twoCamera;
-	public GameObject threeCamera;
-	public GameObject uiCamera;
+	public CameraMove CamMove;
+    public UILabel ShowLabel;
+	public Transform CamPivotTr;
+	public Vector3 CamPivotLocation;
+	public GameObject TwoCamera;
+	public GameObject ThreeCamera;
+	public GameObject UiCamera;
 	
-	public float showStateTime = 0.5f;
+	public float ShowStateTime = 0.5f;
 	
-	public GameObject battleStateImage;	
-	public GameObject ladderStateImage;
-	public GameObject comeStateImage;
-	public GameObject goStateImage;
-	public GameObject victoryStateImage;	
-	public GameObject gameOverStateImage;
+	public GameObject BattleStateImage;	
+	public GameObject LadderStateImage;
+	public GameObject ComeStateImage;
+	public GameObject GoStateImage;
+	public GameObject VictoryStateImage;	
+	public GameObject GameOverStateImage;
 	
 
     private void Awake() {
-        if (instance == null) {
-            instance = this;
+        if (_instance == null) {
+            _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this) {
+        else if (_instance != this) {
             Debug.LogWarning("A singleton already exist! Destroying new one.");
             Destroy(this);
         }
     }
 
     private void Start() {
-//        gamePlayersManager = gameObject.GetComponent<GamePlayersManager>();
-//        movePanelManager = gameObject.GetComponent<MovePanelManager>();
-//        battlePanelManager = gameObject.GetComponent<BattlePanelManager>();
-//        monsterPanelManager = gameObject.GetComponent<MonsterPanelManager>();
+//        PlayersManager = gameObject.GetComponent<GamePlayersManager>();
+//        MoveManager = gameObject.GetComponent<MovePanelManager>();
+//        BattleManager = gameObject.GetComponent<BattlePanelManager>();
+//        MonsterManager = gameObject.GetComponent<MonsterPanelManager>();
 //		gemblePanelManager = gameObject.GetComponent<GemblePanelManager>();		
 		
-		camPivotLocation = camPivotTr.position;
+		CamPivotLocation = CamPivotTr.position;
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Player"), true);
@@ -77,7 +77,7 @@ public class GameSceneController : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public void DisableMovePanel() {
-        movePanelManager.ActiveMovePanel(false, "");
+        MoveManager.ActiveMovePanel(false, "");
 
     }
 
@@ -87,34 +87,34 @@ public class GameSceneController : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public void EnableMovePanel() {
-        int player_no = DataCenter.playerTurnNo;
+        int playerNo = DataCenter.PlayerTurnNo;
 		
 		ActiveTwoCamera ();
 		
 //		camMove.Follow(false);
 //		camMove.gameObject.transform.position = camPivotLocation;
 		
-		if (battlePanelManager.battlePanel.activeSelf) {
+		if (BattleManager.BattlePanel.activeSelf) {
 			DisableBattlePanel();
 		}
 		
-		if (monsterPanelManager.monsterPanel.activeSelf) {
+		if (MonsterManager.MonsterPanel.activeSelf) {
 			DisableMonsterPanel();
 		}
 		
-		if (gamblePanelManager.gamblePanel.activeSelf) {
+		if (GambleManager.GamblePanel.activeSelf) {
 			DisableGamblePanel();
 		}
 		
-        gamePlayersManager.players[player_no].UpdatePlayerName();
+        PlayersManager.Players[playerNo].UpdatePlayerName();
 
-        Debug.Log("playerName: " + gamePlayersManager.players[player_no].playerName);
-        Debug.Log("player_no: " + player_no);
+        Debug.Log("playerName: " + PlayersManager.Players[playerNo].PlayerName);
+        Debug.Log("player_no: " + playerNo);
 
-        movePanelManager.ActiveMovePanel(true, gamePlayersManager.players[player_no].playerName);
+        MoveManager.ActiveMovePanel(true, PlayersManager.Players[playerNo].PlayerName);
 		
-		if (DataCenter.playerTurnNo == 1) {
-			movePanelManager.rollManager.OnClick();
+		if (DataCenter.PlayerTurnNo == 1) {
+			MoveManager.RollManager.OnClick();
 		}
     }
 
@@ -126,12 +126,12 @@ public class GameSceneController : MonoBehaviour {
     /// <param name="num">이동할 주사위의 갯수;</param>
     /// <returns></returns>
     public void ApplyMoveDiceNumber(int num) {
-        var player_no = DataCenter.playerTurnNo;
+        var playerNo = DataCenter.PlayerTurnNo;
 
         DisableMovePanel();
 
-        gamePlayersManager.players[player_no].remainMoveCount = num;
-        gamePlayersManager.players[player_no].MovePlayer();
+        PlayersManager.Players[playerNo].RemainMoveCount = num;
+        PlayersManager.Players[playerNo].MovePlayer();
     }
 
 
@@ -139,15 +139,15 @@ public class GameSceneController : MonoBehaviour {
     /// 수만큼 해당 플레이어에 적용하여 이동;
     /// </summary>
     /// <param name="num">이동할 주사위의 수;</param>
-    /// <param name="player_no">이동할 플레이어의 인덱스;</param>
+    /// <param name="playerNo">이동할 플레이어의 인덱스;</param>
     /// <returns></returns>
-    public void ApplyMoveDiceNumber(int num, int player_no) {
+    public void ApplyMoveDiceNumber(int num, int playerNo) {
         if (num < 0) {
-            gamePlayersManager.players[player_no].isForward = false;
+            PlayersManager.Players[playerNo].IsForward = false;
         }
 
-        gamePlayersManager.players[player_no].remainMoveCount = num;
-        gamePlayersManager.players[player_no].MovePlayer();
+        PlayersManager.Players[playerNo].RemainMoveCount = num;
+        PlayersManager.Players[playerNo].MovePlayer();
 
     }
 
@@ -156,40 +156,40 @@ public class GameSceneController : MonoBehaviour {
     /// 배틀에서 진 플레이어에 적용하여 이동;
     /// </summary>
     /// <param name="num">전투에서의 주사위 갯수의 차;</param>
-    /// <param name="player_no">전투에서 진 플레이어 인덱스;이동할 플레이어;</param>
+    /// <param name="playerNo">전투에서 진 플레이어 인덱스;이동할 플레이어;</param>
     /// <returns></returns>
-    public void ApplyMoveDiceFormBattle(int num, int player_no) {
+    public void ApplyMoveDiceFormBattle(int num, int playerNo) {
 
         if (num < 0) {
             num = -num;
         }
-        gamePlayersManager.players[player_no].isForward = true;
+        PlayersManager.Players[playerNo].IsForward = true;
 
         DisableBattlePanel();
 
-        gamePlayersManager.players[player_no].remainMoveCount = num;
-        gamePlayersManager.players[player_no].MovePlayer();
+        PlayersManager.Players[playerNo].RemainMoveCount = num;
+        PlayersManager.Players[playerNo].MovePlayer();
 
     }
 	
-	public void ApplyMoveToStartFromBattle(int current_num, int player_no) {
-		int start_no;
+	public void ApplyMoveToStartFromBattle(int currentNum, int playerNo) {
+		int startNo;
 		
-		if (current_num < 100) {
-			start_no = 0;
-		} else if (current_num < 200) {
-			start_no = 0;
-		} else if (current_num < 300) {
-			start_no = 100;
+		if (currentNum < 100) {
+			startNo = 0;
+		} else if (currentNum < 200) {
+			startNo = 0;
+		} else if (currentNum < 300) {
+			startNo = 100;
 		} else {
-			start_no = 200;
+			startNo = 200;
 		}
 		
 		DisableBattlePanel();
 		
-		gamePlayersManager.players[player_no].remainMoveCount = 0;
-		gamePlayersManager.players[player_no].nextNum = start_no;
-		gamePlayersManager.players[player_no].TweenMoveTo(true);
+		PlayersManager.Players[playerNo].RemainMoveCount = 0;
+		PlayersManager.Players[playerNo].NextNum = startNo;
+		PlayersManager.Players[playerNo].TweenMoveTo(true);
 	}
 
 
@@ -197,35 +197,30 @@ public class GameSceneController : MonoBehaviour {
     /// <summary>
     /// 전투 패널을 활성화;
     /// </summary>
-    /// <param name="target_block">전투가 벌어진 블럭;</param>
+    /// <param name="targetBlock">전투가 벌어진 블럭;</param>
     /// <returns></returns>
-    public void EnableBattlePanel(Block target_block) {
+    public void EnableBattlePanel(Block targetBlock) {
 		ActiveTwoCamera();
 //		camMove.Follow(false);
 //		camMove.gameObject.transform.position = camPivotLocation;
 		
-		battlePanelManager.ActiveBattlePanel();
+		BattleManager.ActiveBattlePanel();
 
-        int i = 0;
-        List<int> dice_count = new List<int>();
-        foreach (int player_number in target_block.visitedPlayers) {
-			GamePlayer game_player = gamePlayersManager.players[player_number];
-			Debug.Log("player_number: " + player_number.ToString());
-			Debug.Log("healthTotalCount: " + game_player.healthTotalCount);
-			
-            game_player.InitBattleDiceTotal(i);
+        var i = 0;
+        var diceCount = new List<int>();
+        foreach (var gamePlayer in targetBlock.VisitedPlayers.Select(playerNumber => PlayersManager.Players[playerNumber]))
+        {
+            gamePlayer.InitBattleDiceTotal(i);
 
-            battlePanelManager.battleDices[i].battlePlayerName.UpdatePlayerName(game_player.playerName);
-            dice_count.Add(game_player.battleDiceTotalCount + game_player.playerCharacter.Level - 1);
+            BattleManager.BattleDices[i].BattlePlayerName.UpdatePlayerName(gamePlayer.PlayerName);
+            diceCount.Add(gamePlayer.BattleDiceTotalCount + gamePlayer.PlayerCharacter.Level - 1);
 
-            battlePanelManager.battleDices[i].battlePlayerHealth.UpdateHealthPoint(game_player.healthTotalCount);
+            BattleManager.BattleDices[i].BattlePlayerHealth.UpdateHealthPoint(gamePlayer.HealthTotalCount);
 
             i += 1;
         }
 		
-		Debug.Log("dice_count.ToArray()[0]: "+ dice_count.ToArray()[0].ToString());
-		Debug.Log("dice_count.ToArray()[1]: "+ dice_count.ToArray()[1].ToString());
-        battlePanelManager.ActiveValidBattleDices(dice_count.ToArray());
+        BattleManager.ActiveValidBattleDices(diceCount.ToArray());
     }
 
 
@@ -234,16 +229,16 @@ public class GameSceneController : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public void DisableBattlePanel() {
-        battlePanelManager.battlePanel.SetActive(false);
+        BattleManager.BattlePanel.SetActive(false);
     }
 	
 	/// <summary>
 	/// Enables the monster panel.
 	/// </summary>
-	/// <param name='target_block'>
+	/// <param name='targetBlock'>
 	/// Target_block.
 	/// </param>
-    public void EnableMonsterPanel(Block target_block) {
+    public void EnableMonsterPanel(Block targetBlock) {
         Debug.Log("In EnableMonsterPanel method");
 		
 		ActiveTwoCamera();
@@ -251,34 +246,34 @@ public class GameSceneController : MonoBehaviour {
 //		camMove.Follow(false);
 //		camMove.gameObject.transform.position = camPivotLocation;
 
-        monsterPanelManager.ActiveMonsterPanel();
+        MonsterManager.ActiveMonsterPanel();
         
-        List<int> dice_count = new List<int>();
+        var diceCount = new List<int>();
 
-        int player_number = target_block.visitedPlayers[0];
+        var playerNumber = targetBlock.VisitedPlayers[0];
 		
-		GamePlayer game_player = gamePlayersManager.players[player_number];
-        game_player.InitBattleDiceTotal(1);
+		var gamePlayer = PlayersManager.Players[playerNumber];
+        gamePlayer.InitBattleDiceTotal(1);
 
-        target_block.monsterCard.InitDiceCount();
+        targetBlock.MonsterCard.InitDiceCount();
 
-        Debug.Log("monsterName: " + target_block.monsterCard.monsterName);
+        Debug.Log("monsterName: " + targetBlock.MonsterCard.MonsterName);
 
-        monsterPanelManager.battleDices[0].battlePlayerName.UpdatePlayerName(target_block.monsterCard.monsterName);
-        monsterPanelManager.battleDices[1].battlePlayerName.UpdatePlayerName(game_player.playerName);
+        MonsterManager.BattleDices[0].BattlePlayerName.UpdatePlayerName(targetBlock.MonsterCard.MonsterName);
+        MonsterManager.BattleDices[1].BattlePlayerName.UpdatePlayerName(gamePlayer.PlayerName);
 		
-        dice_count.Add(target_block.monsterCard.defenceDiceCount);
-        dice_count.Add(game_player.battleDiceTotalCount + game_player.playerCharacter.Level - 1);
+        diceCount.Add(targetBlock.MonsterCard.DefenceDiceCount);
+        diceCount.Add(gamePlayer.BattleDiceTotalCount + gamePlayer.PlayerCharacter.Level - 1);
 
-        Debug.Log("monsterCard.healthPoint: " + target_block.monsterCard.healthPoint);
+        Debug.Log("monsterCard.healthPoint: " + targetBlock.MonsterCard.HealthPoint);
 
-        monsterPanelManager.battleDices[0].battlePlayerHealth.UpdateHealthPoint(target_block.monsterCard.healthPoint);
-        monsterPanelManager.battleDices[1].battlePlayerHealth.UpdateHealthPoint(game_player.healthTotalCount);
+        MonsterManager.BattleDices[0].BattlePlayerHealth.UpdateHealthPoint(targetBlock.MonsterCard.HealthPoint);
+        MonsterManager.BattleDices[1].BattlePlayerHealth.UpdateHealthPoint(gamePlayer.HealthTotalCount);
 		
-        monsterPanelManager.ActiveValidMonsterDices(dice_count.ToArray());
+        MonsterManager.ActiveValidMonsterDices(diceCount.ToArray());
 		
-		if (DataCenter.playerTurnNo == 1) {
-			monsterPanelManager.rollManager.OnClick();
+		if (DataCenter.PlayerTurnNo == 1) {
+			MonsterManager.RollManager.OnClick();
 		}
     }
 	
@@ -286,17 +281,17 @@ public class GameSceneController : MonoBehaviour {
 	/// Disables the monster panel.
 	/// </summary>
     public void DisableMonsterPanel() {
-        monsterPanelManager.monsterPanel.SetActive(false);
+        MonsterManager.MonsterPanel.SetActive(false);
     }
 	
 	
 	/// <summary>
 	/// Enables the gemble panel.
 	/// </summary>
-	/// <param name='target_block'>
+	/// <param name='targetBlock'>
 	/// Target_block.
 	/// </param>
-	public void EnableGamblePanel(Block target_block) {
+	public void EnableGamblePanel(Block targetBlock) {
         Debug.Log("In EnableGamblePanel method");
 		
 		ActiveTwoCamera();
@@ -304,120 +299,118 @@ public class GameSceneController : MonoBehaviour {
 //		camMove.Follow(false);
 //		camMove.gameObject.transform.position = camPivotLocation;
 
-        gamblePanelManager.ActiveGamblePanel();
+        GambleManager.ActiveGamblePanel();
         
-        List<int> dice_count = new List<int>();
+        var diceCount = new List<int>();
 
-        int player_number = target_block.visitedPlayers[0];
-		GamePlayer game_player = gamePlayersManager.players[player_number];
+        var playerNumber = targetBlock.VisitedPlayers[0];
+		var gamePlayer = PlayersManager.Players[playerNumber];
 		
-        game_player.InitBattleDiceTotal(1);
+        gamePlayer.InitBattleDiceTotal(1);
 
-        target_block.monsterCard.InitDiceCount();
+        targetBlock.MonsterCard.InitDiceCount();
 
         
 
-        gamblePanelManager.battleDices[0].battlePlayerName.UpdatePlayerName("System");
-        gamblePanelManager.battleDices[1].battlePlayerName.UpdatePlayerName(game_player.playerName);
+        GambleManager.BattleDices[0].BattlePlayerName.UpdatePlayerName("System");
+        GambleManager.BattleDices[1].BattlePlayerName.UpdatePlayerName(gamePlayer.PlayerName);
 		
-        dice_count.Add(game_player.battleDiceTotalCount + game_player.playerCharacter.Level - 1);
-        dice_count.Add(game_player.battleDiceTotalCount + game_player.playerCharacter.Level - 1);
+        diceCount.Add(gamePlayer.BattleDiceTotalCount + gamePlayer.PlayerCharacter.Level - 1);
+        diceCount.Add(gamePlayer.BattleDiceTotalCount + gamePlayer.PlayerCharacter.Level - 1);
 
-        gamblePanelManager.battleDices[0].battlePlayerHealth.UpdateHealthPoint(1);
-        gamblePanelManager.battleDices[1].battlePlayerHealth.UpdateHealthPoint(game_player.healthTotalCount);
+        GambleManager.BattleDices[0].BattlePlayerHealth.UpdateHealthPoint(1);
+        GambleManager.BattleDices[1].BattlePlayerHealth.UpdateHealthPoint(gamePlayer.HealthTotalCount);
 		
-		Debug.Log("dice_count.ToArray()[0]: "+ dice_count.ToArray()[0].ToString());
-		Debug.Log("dice_count.ToArray()[1]: "+ dice_count.ToArray()[1].ToString());
-        gamblePanelManager.ActiveValidGambleDices(dice_count.ToArray());
+        GambleManager.ActiveValidGambleDices(diceCount.ToArray());
     }
 	
 	/// <summary>
 	/// Disables the gemble panel.
 	/// </summary>
 	public void DisableGamblePanel() {
-        gamblePanelManager.gamblePanel.SetActive(false);
+        GambleManager.GamblePanel.SetActive(false);
     }
 	
 	/// <summary>
 	/// Raises the application quit event.
 	/// </summary>
     public void OnApplicationQuit() {
-        instance = null;
+        _instance = null;
     }
 
 	public void ActiveTwoCamera ()
 	{
-		if (threeCamera.activeSelf) {
-    		threeCamera.SetActive(false);
+		if (ThreeCamera.activeSelf) {
+    		ThreeCamera.SetActive(false);
     	}
     	
-    	if (!twoCamera.activeSelf) {
-    		twoCamera.SetActive(true);
+    	if (!TwoCamera.activeSelf) {
+    		TwoCamera.SetActive(true);
     	}
 		
-		if (uiCamera.activeSelf) {
-			uiCamera.SetActive(false);			
+		if (UiCamera.activeSelf) {
+			UiCamera.SetActive(false);			
 		}
 		
-		if (!uiCamera.activeSelf) {
-			uiCamera.SetActive(true);
+		if (!UiCamera.activeSelf) {
+			UiCamera.SetActive(true);
 		}
 	}
 	
-	public void ActiveThreeCamera(Transform object_tr) {
-		if (twoCamera.activeSelf) {
-			twoCamera.SetActive(false);
+	public void ActiveThreeCamera(Transform objectTr) {
+		if (TwoCamera.activeSelf) {
+			TwoCamera.SetActive(false);
 		}
 		
-		if (!threeCamera.activeSelf) {
-			threeCamera.SetActive(true);
+		if (!ThreeCamera.activeSelf) {
+			ThreeCamera.SetActive(true);
 		}
 		
-		camMove.Follow(object_tr);
+		CamMove.Follow(objectTr);
 	}
 	
 	public void RestartGame() {
-		if (battlePanelManager.battlePanel.activeSelf) {
-			battlePanelManager.battlePanel.SetActive(false);
+		if (BattleManager.BattlePanel.activeSelf) {
+			BattleManager.BattlePanel.SetActive(false);
 		}
 		
-		if (monsterPanelManager.monsterPanel.activeSelf) {
-			monsterPanelManager.monsterPanel.SetActive(false);
+		if (MonsterManager.MonsterPanel.activeSelf) {
+			MonsterManager.MonsterPanel.SetActive(false);
 		}
 		
-		if (gamblePanelManager.gamblePanel.activeSelf) {
-			gamblePanelManager.gamblePanel.SetActive(false);
+		if (GambleManager.GamblePanel.activeSelf) {
+			GambleManager.GamblePanel.SetActive(false);
 		}	
 		
-		if (movePanelManager.moveDicePanel.activeSelf) {
-			movePanelManager.moveDicePanel.SetActive(true);
+		if (MoveManager.MoveDicePanel.activeSelf) {
+			MoveManager.MoveDicePanel.SetActive(true);
 		}
 		
-		for (int i = 0; i < DataCenter.playerCount; i++) {
-			gamePlayersManager.players[i].remainMoveCount = 0;
-			gamePlayersManager.players[i].nextNum = 0;
-			gamePlayersManager.players[i].JustMoveTo();
+		for (var i = 0; i < DataCenter.PlayerCount; i++) {
+			PlayersManager.Players[i].RemainMoveCount = 0;
+			PlayersManager.Players[i].NextNum = 0;
+			PlayersManager.Players[i].JustMoveTo();
 		}
 		
-		DataCenter.playerTurnNo = 0;
+		DataCenter.PlayerTurnNo = 0;
 		
 		EnableMovePanel();
 	}
 	
 	
-	public void ActionStateImage(GameObject state_image) {
-		StartCoroutine(ShowStateImage(state_image));
+	public void ActionStateImage(GameObject stateImage) {
+		StartCoroutine(ShowStateImage(stateImage));
 	}
 	
-	public IEnumerator ShowStateImage(GameObject state_image) {
-		if (!state_image.activeSelf) {
-			state_image.SetActive(true);
+	public IEnumerator ShowStateImage(GameObject stateImage) {
+		if (!stateImage.activeSelf) {
+			stateImage.SetActive(true);
 		}
 		
-		yield return new WaitForSeconds(showStateTime);
+		yield return new WaitForSeconds(ShowStateTime);
 		
-		if (state_image.activeSelf) {
-			state_image.SetActive(false);
+		if (stateImage.activeSelf) {
+			stateImage.SetActive(false);
 		}
 	}
 }

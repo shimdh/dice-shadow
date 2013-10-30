@@ -6,23 +6,12 @@ using System.Collections;
 /// 배틀시에 주사위를 돌릴 버튼 관리;
 /// </summary>
 public class ButtonBattleRollManager : MonoBehaviour {
-    private GameSceneController sceneController;
+    private GameSceneController _sceneController;
 
     void Awake()
     {
-        sceneController = GameSceneController.Instance;
+        _sceneController = GameSceneController.Instance;
     }
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	
 	/// <summary>
     /// 배틀 버튼 클릭시;
@@ -45,74 +34,66 @@ public class ButtonBattleRollManager : MonoBehaviour {
     public IEnumerator ApplyBattleResult()
     {
         yield return new WaitForSeconds(2.0f);
-		int dice_total_number_0 = sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
-		int dice_total_number_1 = sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
-		GamePlayer fail_player = sceneController.gamePlayersManager.players[DataCenter.playerTurnNo];
+		var diceTotalNumber0 = _sceneController.BattleManager.BattleDices[0].DiceTotalNumber;
+		var diceTotalNumber1 = _sceneController.BattleManager.BattleDices[1].DiceTotalNumber;
+		var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
 
-        if (DataCenter.battleDiceRule == DataCenter.BattleDiceRule.High)
+        if (DataCenter.BattleRule == DataCenter.BattleDiceRule.High)
         {
-            if (dice_total_number_0 > dice_total_number_1)
+            if (diceTotalNumber0 > diceTotalNumber1)
             {
                 
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[1];
-                int win_player_no = fail_player.targetBlock.visitedPlayers[0];
-//                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
-//                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[1];
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+//                int move_count = sceneController.BattleManager.BattleDiceObjects[1].diceTotalNumber
+//                    - sceneController.BattleManager.BattleDiceObjects[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+				ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
 //                ApplyFailPlayer(fail_player_no, move_count);
-                ApplyWinPlayer(win_player_no);
+                ApplyWinPlayer(winPlayerNo);
 
             }
-            else if (dice_total_number_0 < dice_total_number_1)
+            else if (diceTotalNumber0 < diceTotalNumber1)
             {
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
-                int win_player_no = fail_player.targetBlock.visitedPlayers[1];
-//                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
-//                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[1];
+//                int move_count = sceneController.BattleManager.BattleDiceObjects[0].diceTotalNumber
+//                    - sceneController.BattleManager.BattleDiceObjects[1].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+				ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
 //                ApplyFailPlayer(fail_player_no, move_count);
-                ApplyWinPlayer(win_player_no);
-
-            }
-            else
-            {
+                ApplyWinPlayer(winPlayerNo);
 
             }
         }
         else
         {
-            if (dice_total_number_0 < dice_total_number_1)
+            if (diceTotalNumber0 < diceTotalNumber1)
             {
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[1];
-                int win_player_no = fail_player.targetBlock.visitedPlayers[0];
-//                int move_count = sceneController.battlePanelManager.battleDices[1].diceTotalNumber
-//                    - sceneController.battlePanelManager.battleDices[0].diceTotalNumber;
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[1];
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+//                int move_count = sceneController.BattleManager.BattleDiceObjects[1].diceTotalNumber
+//                    - sceneController.BattleManager.BattleDiceObjects[0].diceTotalNumber;
 				
 				StartCoroutine("DisableBattlePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+				ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
 //                ApplyFailPlayer(fail_player_no, move_count);
-                ApplyWinPlayer(win_player_no);
+                ApplyWinPlayer(winPlayerNo);
 
             }
-            else if (dice_total_number_0 > dice_total_number_1)
+            else if (diceTotalNumber0 > diceTotalNumber1)
             {
-                int fail_player_no = fail_player.targetBlock.visitedPlayers[0];
-                int win_player_no = fail_player.targetBlock.visitedPlayers[1];
-//                int move_count = sceneController.battlePanelManager.battleDices[0].diceTotalNumber
-//                    - sceneController.battlePanelManager.battleDices[1].diceTotalNumber;
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[1];
+//                int move_count = sceneController.BattleManager.BattleDiceObjects[0].diceTotalNumber
+//                    - sceneController.BattleManager.BattleDiceObjects[1].diceTotalNumber;
 
 				StartCoroutine("DisableBattlePanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
+				ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
 //                ApplyFailPlayer(fail_player_no, move_count);
-                ApplyWinPlayer(win_player_no);
-
-            }
-            else
-            {
+                ApplyWinPlayer(winPlayerNo);
 
             }
         }
@@ -125,13 +106,13 @@ public class ButtonBattleRollManager : MonoBehaviour {
 	/// <returns></returns>
 	public void BattleRoll ()
 	{
-		if (sceneController == null) {
-			sceneController = GameSceneController.Instance;
+		if (_sceneController == null) {
+			_sceneController = GameSceneController.Instance;
 		}
 		
         Debug.Log("BattleRoll");
-		for (int i = 0; i < 2; i++) {
-            sceneController.battlePanelManager.battleDices[i].RollDices();
+		for (var i = 0; i < 2; i++) {
+            _sceneController.BattleManager.BattleDices[i].RollDices();
 		}
 	}
 	
@@ -139,31 +120,31 @@ public class ButtonBattleRollManager : MonoBehaviour {
 	/// <summary>
     /// 진 플레이어를 주사위 차만큼 뒤로 이동;
 	/// </summary>
-	/// <param name="fail_player_no"></param>
-	/// <param name="move_count"></param>
+	/// <param name="failPlayerNo"></param>
+	/// <param name="moveCount"></param>
 	/// <returns></returns>
-	public void ApplyFailPlayer (int fail_player_no, int move_count)
+	public void ApplyFailPlayer (int failPlayerNo, int moveCount)
 	{
-		GamePlayer fail_player = sceneController.gamePlayersManager.players[fail_player_no];
-        fail_player.healthTotalCount -= 1;
-        if (fail_player.healthTotalCount <= 0)
+		var failPlayer = _sceneController.PlayersManager.Players[failPlayerNo];
+        failPlayer.HealthTotalCount -= 1;
+        if (failPlayer.HealthTotalCount <= 0)
 		{
-			sceneController.showLabel.text = "Finished";
+			_sceneController.ShowLabel.text = "Finished";
 		}
-        sceneController.ApplyMoveDiceFormBattle(move_count, fail_player_no);
+        _sceneController.ApplyMoveDiceFormBattle(moveCount, failPlayerNo);
 	}
 	
-	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
-		GamePlayer fail_player = sceneController.gamePlayersManager.players[fail_player_no];
-        fail_player.healthTotalCount -= 1;
-        if (fail_player.healthTotalCount <= 0)
+	public void ApplyFailToMoveStart(int failPlayerNo, int currentNo) {
+		var failPlayer = _sceneController.PlayersManager.Players[failPlayerNo];
+        failPlayer.HealthTotalCount -= 1;
+        if (failPlayer.HealthTotalCount <= 0)
 		{
-			sceneController.showLabel.text = "Game Over";
-			sceneController.ActionStateImage(sceneController.gameOverStateImage);			
-			sceneController.RestartGame();
+			_sceneController.ShowLabel.text = "Game Over";
+			_sceneController.ActionStateImage(_sceneController.GameOverStateImage);			
+			_sceneController.RestartGame();
 		}
 		else {
-			sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no);  
+			_sceneController.ApplyMoveToStartFromBattle(currentNo, failPlayerNo);  
 		}
 		      
 	}
@@ -171,28 +152,24 @@ public class ButtonBattleRollManager : MonoBehaviour {
 	/// <summary>
 	/// Applies the window player.
 	/// </summary>
-	/// <param name='win_player_no'>
+	/// <param name='winPlayerNo'>
 	/// Win_player_no.
 	/// </param>
-    public void ApplyWinPlayer(int win_player_no)
+    public void ApplyWinPlayer(int winPlayerNo)
     {
         
-		GamePlayer win_player = sceneController.gamePlayersManager.players[win_player_no];
+		var winPlayer = _sceneController.PlayersManager.Players[winPlayerNo];
 		Debug.Log("Battle.ApplyWinPlayer");
-		
-        if (!win_player.gotEvent)
-        {
-			switch (win_player.targetBlock.blockState) {
-			case DataCenter.BlockState.Monster:				
-				win_player.MoveCompleted();
-				break;
-			case DataCenter.BlockState.RandomBox:
-				win_player.MoveCompleted();
-				break;
-			default:
-			break;
-			}            
-        }
+
+	    if (winPlayer.GotEvent) return;
+	    switch (winPlayer.TargetBlock.BlockState) {
+	        case DataCenter.BlockState.Monster:				
+	            winPlayer.MoveCompleted();
+	            break;
+	        case DataCenter.BlockState.RandomBox:
+	            winPlayer.MoveCompleted();
+	            break;
+	    }
     }
 	
 	/// <summary>
@@ -204,6 +181,6 @@ public class ButtonBattleRollManager : MonoBehaviour {
 	public IEnumerator DisableBattlePanel()
 	{
 		yield return new WaitForSeconds(0.2f);
-		sceneController.DisableBattlePanel();
+		_sceneController.DisableBattlePanel();
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 
 /// <summary>
@@ -7,10 +6,10 @@ using System.Collections;
 /// </summary>
 [System.Serializable]
 public class GameCard {
-	public int attackDiceCount; // 공격 주사위 갯수;
-	public int defenceDiceCount; // 수비 주사위 갯수;
-	public int diceCount; // 사용되는 주사위 갯수;
-	public int healthPoint; // 소유하고 있는 생명 포인트;
+	public int AttackDiceCount; // 공격 주사위 갯수;
+	public int DefenceDiceCount; // 수비 주사위 갯수;
+	public int DiceCount; // 사용되는 주사위 갯수;
+	public int HealthPoint; // 소유하고 있는 생명 포인트;
 	
 	/// <summary>
     /// 클래스 초기화;
@@ -30,8 +29,8 @@ public class GameCard {
     /// <returns></returns>
     public void GeneratePoint()
     {
-        this.attackDiceCount = Random.Range(1, 3); // 공격 주사위 갯수 생성;
-        this.defenceDiceCount = Random.Range(1, 3); // 방어 주사위 갯수 생성;
-        this.healthPoint = Random.Range(1, 3); // 생명 포인트 생성;
+        AttackDiceCount = Random.Range(1, 3); // 공격 주사위 갯수 생성;
+        DefenceDiceCount = Random.Range(1, 3); // 방어 주사위 갯수 생성;
+        HealthPoint = Random.Range(1, 3); // 생명 포인트 생성;
     }
 }

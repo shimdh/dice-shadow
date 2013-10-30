@@ -1,37 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Monster panel manager.
 /// </summary>
-public class MonsterPanelManager : MonoBehaviour {
-    public GameObject monsterPanel;
-    public BattleDices[] battleDices;
-	public ButtonMonsterRollManager rollManager;
+public class MonsterPanelManager : MonoBehaviour
+{
+    public GameObject MonsterPanel;
+    public BattleDices[] BattleDices;
+    public ButtonMonsterRollManager RollManager;
 
-    // Use this for initialization
-    void Start()
-    {
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
+    
     /// <summary>
     /// 전체 주사위 오브젝트들을 비활성화;
     /// </summary>
     /// <returns></returns>
     public void DisableAllMonsterDices()
     {
-        for (int i = 0; i < battleDices.Length; i++)
+        foreach (var t in BattleDices)
         {
-            battleDices[i].DisableAllDices();
+            t.DisableAllDices();
         }
     }
 
@@ -39,14 +26,14 @@ public class MonsterPanelManager : MonoBehaviour {
     /// <summary>
     /// 유효한 주사위 오브젝트들만 활성화;
     /// </summary>
-    /// <param name="dice_count">각 주사위 갯수;</param>
+    /// <param name="diceCount">각 주사위 갯수;</param>
     /// <returns></returns>
-    public void ActiveValidMonsterDices(int[] dice_count)
+    public void ActiveValidMonsterDices(int[] diceCount)
     {
-        for (int i = 0; i < battleDices.Length; i++)
+        for (var i = 0; i < BattleDices.Length; i++)
         {
-            battleDices[i].ActiveValidDices(dice_count[i]);
-            battleDices[i].ResetValidDices();
+            BattleDices[i].ActiveValidDices(diceCount[i]);
+            BattleDices[i].ResetValidDices();
         }
     }
 
@@ -58,7 +45,7 @@ public class MonsterPanelManager : MonoBehaviour {
     public void ActiveMonsterPanel()
     {
         Debug.Log("ActiveMonsterPanel");
-        monsterPanel.SetActive(true);
+        MonsterPanel.SetActive(true);
         DisableAllMonsterDices();
-    }    
+    }
 }

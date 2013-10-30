@@ -5,195 +5,206 @@ using System.Collections;
 /// Button monster roll manager.
 /// </summary>
 public class ButtonMonsterRollManager : MonoBehaviour
-{	
-	private GameSceneController sceneController;
+{
+    private GameSceneController _sceneController;
 
-	void Awake ()
-	{
-        
-	}
-
-	// Use this for initialization
-	void Start ()
-	{
-		sceneController = GameSceneController.Instance;
-	}
-
-	// Update is called once per frame
-	void Update ()
-	{
-
-	}
+    // Use this for initialization
+    void Start()
+    {
+        _sceneController = GameSceneController.Instance;
+    }
 
 
-	/// <summary>
-	/// 롤 버튼 클릭시;
-	/// </summary>
-	/// <returns></returns>
-	public void OnClick ()
-	{
-		MonsterRoll ();
+    /// <summary>
+    /// 롤 버튼 클릭시;
+    /// </summary>
+    /// <returns></returns>
+    public void OnClick()
+    {
+        MonsterRoll();
 
-		StartCoroutine ("ApplyMonsterResult");
-        
-	}
-	
-	/// <summary>
-	/// Applies the monster result.
-	/// </summary>
-	/// <returns>
-	/// The monster result.
-	/// </returns>
-	public IEnumerator ApplyMonsterResult ()
-	{
-		yield return new WaitForSeconds(2.0f);
+        StartCoroutine("ApplyMonsterResult");
 
-		if (DataCenter.battleDiceRule == DataCenter.BattleDiceRule.High) {
-			if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
-            > sceneController.monsterPanelManager.battleDices [1].diceTotalNumber) {
-				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
-				int fail_player_no = fail_player.targetBlock.visitedPlayers [0];
-                
-//				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
-//                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
-				
-				StartCoroutine ("DisableMonsterPanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
-//				ApplyFailPlayer (fail_player_no, move_count);
-                
+    }
 
-			} else if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
-            < sceneController.monsterPanelManager.battleDices [1].diceTotalNumber) {
-				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
-                
-				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
-                
-				StartCoroutine ("DisableMonsterPanel");		
-				ApplyWinPlayer (win_player_no);				
+    /// <summary>
+    /// Applies the monster result.
+    /// </summary>
+    /// <returns>
+    /// The monster result.
+    /// </returns>
+    public IEnumerator ApplyMonsterResult()
+    {
+        yield return new WaitForSeconds(2.0f);
 
-			} else {
-				if (DataCenter.playerTurnNo == 1) {
-					OnClick();
-				}
-			}
-		} else {
-			if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
-            < sceneController.monsterPanelManager.battleDices [1].diceTotalNumber) {
-				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
-				int fail_player_no = fail_player.targetBlock.visitedPlayers [0];
-                
-//				int move_count = sceneController.monsterPanelManager.battleDices [1].diceTotalNumber
-//                    - sceneController.monsterPanelManager.battleDices [0].diceTotalNumber;
+        if (DataCenter.BattleRule == DataCenter.BattleDiceRule.High)
+        {
+            if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
+            > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+            {
+                var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
 
-				StartCoroutine ("DisableMonsterPanel");
-				ApplyFailToMoveStart(fail_player_no, fail_player.currentNum);
-//				ApplyFailPlayer (fail_player_no, move_count);
-			} else if (sceneController.monsterPanelManager.battleDices [0].diceTotalNumber
-            > sceneController.monsterPanelManager.battleDices [1].diceTotalNumber) {
-				GamePlayer fail_player = sceneController.gamePlayersManager.players [DataCenter.playerTurnNo];
-                
-				int win_player_no = fail_player.targetBlock.visitedPlayers [0];
+                //				int move_count = sceneController.MonsterManager.BattleDiceObjects [1].diceTotalNumber
+                //                    - sceneController.MonsterManager.BattleDiceObjects [0].diceTotalNumber;
 
-				StartCoroutine ("DisableMonsterPanel");
-				ApplyWinPlayer (win_player_no);				
-
-			} else {
-				if (DataCenter.playerTurnNo == 1) {
-					OnClick();
-				}
-			}
-		}
-	}
+                StartCoroutine("DisableMonsterPanel");
+                ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
+                //				ApplyFailPlayer (fail_player_no, move_count);
 
 
-	/// <summary>
-	/// 각 플레이어 주사위 수를 생성;
-	/// </summary>
-	/// <returns></returns>
-	public void MonsterRoll ()
-	{
-		Debug.Log ("BattleRoll");
-		for (int i = 0; i < 2; i++) {
-			sceneController.monsterPanelManager.battleDices [i].RollDices ();
-		}
-	}
+            }
+            else if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
+          < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+            {
+                var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
+
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+
+                StartCoroutine("DisableMonsterPanel");
+                ApplyWinPlayer(winPlayerNo);
+
+            }
+            else
+            {
+                if (DataCenter.PlayerTurnNo == 1)
+                {
+                    OnClick();
+                }
+            }
+        }
+        else
+        {
+            if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
+            < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+            {
+                var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
+                var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+
+                //				int move_count = sceneController.MonsterManager.BattleDiceObjects [1].diceTotalNumber
+                //                    - sceneController.MonsterManager.BattleDiceObjects [0].diceTotalNumber;
+
+                StartCoroutine("DisableMonsterPanel");
+                ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
+                //				ApplyFailPlayer (fail_player_no, move_count);
+            }
+            else if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
+          > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+            {
+                var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
+
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+
+                StartCoroutine("DisableMonsterPanel");
+                ApplyWinPlayer(winPlayerNo);
+
+            }
+            else
+            {
+                if (DataCenter.PlayerTurnNo == 1)
+                {
+                    OnClick();
+                }
+            }
+        }
+    }
 
 
-	/// <summary>
-	/// 진 플레이어를 주사위 차만큼 뒤로 이동;
-	/// </summary>
-	/// <param name="fail_player_no"></param>
-	/// <param name="move_count"></param>
-	/// <returns></returns>
-	public void ApplyFailPlayer (int fail_player_no, int move_count)
-	{
-		// TODO: 졌을시에 초기로 돌아가기로 변경;
-		sceneController.showLabel.text = "Lost";
-		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
-		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
-			sceneController.showLabel.text = "Finished";
-		}		
-		sceneController.ApplyMoveDiceFormBattle (move_count, fail_player_no);
-	}
-	
-	public void ApplyFailToMoveStart(int fail_player_no, int current_no) {
-		sceneController.showLabel.text = "Lost";
-		sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount -= 1;
-		if (sceneController.gamePlayersManager.players [fail_player_no].healthTotalCount <= 0) {
-			sceneController.showLabel.text = "Game Over";
-			sceneController.ActionStateImage(sceneController.gameOverStateImage);			
-			sceneController.RestartGame();
-		}	
-		else {
-			sceneController.ApplyMoveToStartFromBattle(current_no, fail_player_no);
-		}
-	}
-	
-	/// <summary>
-	/// Applies the window player.
-	/// </summary>
-	/// <param name='win_player_no'>
-	/// Win_player_no.
-	/// </param>
-	public void ApplyWinPlayer (int win_player_no)
-	{
-		sceneController.showLabel.text = "Win";
-		GamePlayer win_player = sceneController.gamePlayersManager.players [win_player_no];
-		Debug.Log ("Monster.ApplyWinPlayer");
-		
-		sceneController.ActionStateImage(sceneController.victoryStateImage);
-		
-		win_player.targetBlock.monsterCard.healthPoint -= 1;
-		if (win_player.targetBlock.blockState == DataCenter.BlockState.Keeper) {
-			if (win_player.targetBlock.monsterCard.healthPoint == 0) {
-				if (win_player.targetBlock.keeperObject.activeSelf) {
-					win_player.targetBlock.keeperObject.SetActive (false);
-				}
-			}			
-		}
-		win_player.playerCharacter.Experience += win_player.targetBlock.monsterCard.experiencePoint;
-		
-		win_player.MoveCompleted ();
-		
-//        if (!win_player.gotEvent)
-//        {
-//			switch (win_player.targetBlock.blockState) {
-//			default:
-//				win_player.MoveCompleted();
-//			break;
-//			}            
-//        }
-	}
-	
-	/// <summary>
-	/// Disables the monster panel.
-	/// </summary>
-	/// <returns>
-	/// The monster panel.
-	/// </returns>
-	public IEnumerator DisableMonsterPanel ()
-	{
-		yield return new WaitForSeconds(0.2f);
-		sceneController.DisableMonsterPanel ();
-	}
+    /// <summary>
+    /// 각 플레이어 주사위 수를 생성;
+    /// </summary>
+    /// <returns></returns>
+    public void MonsterRoll()
+    {
+        Debug.Log("BattleRoll");
+        for (var i = 0; i < 2; i++)
+        {
+            _sceneController.MonsterManager.BattleDices[i].RollDices();
+        }
+    }
+
+
+    /// <summary>
+    /// 진 플레이어를 주사위 차만큼 뒤로 이동;
+    /// </summary>
+    /// <param name="failPlayerNo"></param>
+    /// <param name="moveCount"></param>
+    /// <returns></returns>
+    public void ApplyFailPlayer(int failPlayerNo, int moveCount)
+    {
+        _sceneController.ShowLabel.text = "Lost";
+        _sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount -= 1;
+        if (_sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount <= 0)
+        {
+            _sceneController.ShowLabel.text = "Finished";
+        }
+        _sceneController.ApplyMoveDiceFormBattle(moveCount, failPlayerNo);
+    }
+
+    public void ApplyFailToMoveStart(int failPlayerNo, int currentNo)
+    {
+        _sceneController.ShowLabel.text = "Lost";
+        _sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount -= 1;
+        if (_sceneController.PlayersManager.Players[failPlayerNo].HealthTotalCount <= 0)
+        {
+            _sceneController.ShowLabel.text = "Game Over";
+            _sceneController.ActionStateImage(_sceneController.GameOverStateImage);
+            _sceneController.RestartGame();
+        }
+        else
+        {
+            _sceneController.ApplyMoveToStartFromBattle(currentNo, failPlayerNo);
+        }
+    }
+
+    /// <summary>
+    /// Applies the window player.
+    /// </summary>
+    /// <param name='winPlayerNo'>
+    /// Win_player_no.
+    /// </param>
+    public void ApplyWinPlayer(int winPlayerNo)
+    {
+        _sceneController.ShowLabel.text = "Win";
+        var winPlayer = _sceneController.PlayersManager.Players[winPlayerNo];
+        Debug.Log("Monster.ApplyWinPlayer");
+
+        _sceneController.ActionStateImage(_sceneController.VictoryStateImage);
+
+        winPlayer.TargetBlock.MonsterCard.HealthPoint -= 1;
+        if (winPlayer.TargetBlock.BlockState == DataCenter.BlockState.Keeper)
+        {
+            if (winPlayer.TargetBlock.MonsterCard.HealthPoint == 0)
+            {
+                if (winPlayer.TargetBlock.KeeperObject.activeSelf)
+                {
+                    winPlayer.TargetBlock.KeeperObject.SetActive(false);
+                }
+            }
+        }
+        winPlayer.PlayerCharacter.Experience += winPlayer.TargetBlock.MonsterCard.ExperiencePoint;
+
+        winPlayer.MoveCompleted();
+
+        //        if (!win_player.gotEvent)
+        //        {
+        //			switch (win_player.targetBlock.blockState) {
+        //			default:
+        //				win_player.MoveCompleted();
+        //			break;
+        //			}            
+        //        }
+    }
+
+    /// <summary>
+    /// Disables the monster panel.
+    /// </summary>
+    /// <returns>
+    /// The monster panel.
+    /// </returns>
+    public IEnumerator DisableMonsterPanel()
+    {
+        yield return new WaitForSeconds(0.2f);
+        _sceneController.DisableMonsterPanel();
+    }
 }
