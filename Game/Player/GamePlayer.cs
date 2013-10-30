@@ -50,7 +50,6 @@ public class GamePlayer : MonoBehaviour
 		
 		RemoveBlockPosition ();
 		TargetBlock.VisitedPlayers.Add (PlayerIndex);
-//		targetBlock.visitedPlayers.Add (DataCenter.playerTurnNo);
 		
         
 		if (TargetBlock.VisitedPlayers.Count == 2) {			
