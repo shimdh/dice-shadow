@@ -14,10 +14,10 @@ public class GameSceneController : MonoBehaviour
     public Vector3 CamPivotLocation;
     public Transform CamPivotTr;
     public UILabel ShowLabel;
-    public float ShowStateTime = 0.5f;
     public GameObject ThreeCamera;
     public GameObject TwoCamera;
     public GameObject UiCamera;
+    public float ShowStateTime = 0.5f;
 
     #region State Image Objects
 
@@ -74,7 +74,7 @@ public class GameSceneController : MonoBehaviour
         GambleManager = GetComponent<GamblePanelManager>();
         PlayersManager = GetComponent<GamePlayersManager>();
 
-        if (CamPivotTr != null)
+        if (CamPivotTr)
         {
             CamPivotLocation = CamPivotTr.position;
         }
@@ -85,15 +85,6 @@ public class GameSceneController : MonoBehaviour
         EnableMovePanel();
     }
 
-    /// <summary>
-    ///     이동 주사위 패널을 비활성화;
-    /// </summary>
-    /// <returns></returns>
-    public void DisableMovePanel()
-    {
-        MoveManager.ActiveMovePanel(false, "");
-    }
-
 
     /// <summary>
     ///     이동 주사위 패널을 활성화;
@@ -101,7 +92,7 @@ public class GameSceneController : MonoBehaviour
     /// <returns></returns>
     public void EnableMovePanel()
     {
-        int playerNo = DataCenter.PlayerTurnNo;
+        var playerNo = DataCenter.PlayerTurnNo;
 
         ActiveTwoCamera();
 
@@ -136,6 +127,15 @@ public class GameSceneController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///     이동 주사위 패널을 비활성화;
+    /// </summary>
+    /// <returns></returns>
+    public void DisableMovePanel()
+    {
+        MoveManager.ActiveMovePanel(false, "");
+    }
+
 
     /// <summary>
     ///     이동 주사위 패널에 나온 주사위수의 총합을 해당 플레이어에 적용하여 이동;
@@ -144,7 +144,7 @@ public class GameSceneController : MonoBehaviour
     /// <returns></returns>
     public void ApplyMoveDiceNumber(int num)
     {
-        int playerNo = DataCenter.PlayerTurnNo;
+        var playerNo = DataCenter.PlayerTurnNo;
 
         DisableMovePanel();
 
@@ -277,9 +277,9 @@ public class GameSceneController : MonoBehaviour
 
         var diceCount = new List<int>();
 
-        int playerNumber = targetBlock.VisitedPlayers[0];
+        var playerNumber = targetBlock.VisitedPlayers[0];
 
-        GamePlayer gamePlayer = PlayersManager.Players[playerNumber];
+        var gamePlayer = PlayersManager.Players[playerNumber];
         gamePlayer.InitBattleDiceTotal(1);
 
         targetBlock.MonsterCard.InitDiceCount();
@@ -330,8 +330,8 @@ public class GameSceneController : MonoBehaviour
 
         var diceCount = new List<int>();
 
-        int playerNumber = targetBlock.VisitedPlayers[0];
-        GamePlayer gamePlayer = PlayersManager.Players[playerNumber];
+        var playerNumber = targetBlock.VisitedPlayers[0];
+        var gamePlayer = PlayersManager.Players[playerNumber];
 
         gamePlayer.InitBattleDiceTotal(1);
 
@@ -356,14 +356,6 @@ public class GameSceneController : MonoBehaviour
     public void DisableGamblePanel()
     {
         GambleManager.GamblePanel.SetActive(false);
-    }
-
-    /// <summary>
-    ///     Raises the application quit event.
-    /// </summary>
-    public void OnApplicationQuit()
-    {
-        _instance = null;
     }
 
     public void ActiveTwoCamera()
@@ -426,7 +418,7 @@ public class GameSceneController : MonoBehaviour
             MoveManager.MoveDicePanel.SetActive(true);
         }
 
-        for (int i = 0; i < DataCenter.PlayerCount; i++)
+        for (var i = 0; i < DataCenter.PlayerCount; i++)
         {
             PlayersManager.Players[i].RemainMoveCount = 0;
             PlayersManager.Players[i].NextNum = 0;
@@ -457,5 +449,13 @@ public class GameSceneController : MonoBehaviour
         {
             stateImage.SetActive(false);
         }
+    }
+
+    /// <summary>
+    ///     Raises the application quit event.
+    /// </summary>
+    public void OnApplicationQuit()
+    {
+        _instance = null;
     }
 }
