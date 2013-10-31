@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Gemble panel manager.
+///     Gemble panel manager.
 /// </summary>
 public class GamblePanelManager : MonoBehaviour
 {
-    public GameObject GamblePanel;
     public BattleDices[] BattleDices;
+    public GameObject GamblePanel;
 
 
     /// <summary>
-    /// 전체 주사위 오브젝트들을 비활성화;
+    ///     전체 주사위 오브젝트들을 비활성화;
     /// </summary>
     /// <returns></returns>
     public void DisableAllGambleDices()
@@ -23,7 +23,7 @@ public class GamblePanelManager : MonoBehaviour
 
 
     /// <summary>
-    /// 유효한 주사위 오브젝트들만 활성화;
+    ///     유효한 주사위 오브젝트들만 활성화;
     /// </summary>
     /// <param name="diceCount">각 주사위 갯수;</param>
     /// <returns></returns>
@@ -38,7 +38,7 @@ public class GamblePanelManager : MonoBehaviour
 
 
     /// <summary>
-    /// 배틀 패널 활성화;
+    ///     배틀 패널 활성화;
     /// </summary>
     /// <returns></returns>
     public void ActiveGamblePanel()

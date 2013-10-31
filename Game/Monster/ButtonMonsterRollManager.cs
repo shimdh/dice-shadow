@@ -1,22 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
-/// Button monster roll manager.
+///     Button monster roll manager.
 /// </summary>
 public class ButtonMonsterRollManager : MonoBehaviour
 {
     private GameSceneController _sceneController;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         _sceneController = GameSceneController.Instance;
     }
 
 
     /// <summary>
-    /// 롤 버튼 클릭시;
+    ///     롤 버튼 클릭시;
     /// </summary>
     /// <returns></returns>
     public void OnClick()
@@ -24,14 +24,13 @@ public class ButtonMonsterRollManager : MonoBehaviour
         MonsterRoll();
 
         StartCoroutine("ApplyMonsterResult");
-
     }
 
     /// <summary>
-    /// Applies the monster result.
+    ///     Applies the monster result.
     /// </summary>
     /// <returns>
-    /// The monster result.
+    ///     The monster result.
     /// </returns>
     public IEnumerator ApplyMonsterResult()
     {
@@ -40,7 +39,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
         if (DataCenter.BattleRule == DataCenter.BattleDiceRule.High)
         {
             if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
-            > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+                > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
             {
                 var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
                 var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
@@ -51,11 +50,9 @@ public class ButtonMonsterRollManager : MonoBehaviour
                 StartCoroutine("DisableMonsterPanel");
                 ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
                 //				ApplyFailPlayer (fail_player_no, move_count);
-
-
             }
             else if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
-          < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+                     < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
             {
                 var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
 
@@ -63,7 +60,6 @@ public class ButtonMonsterRollManager : MonoBehaviour
 
                 StartCoroutine("DisableMonsterPanel");
                 ApplyWinPlayer(winPlayerNo);
-
             }
             else
             {
@@ -76,7 +72,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
         else
         {
             if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
-            < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+                < _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
             {
                 var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
                 var failPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
@@ -89,15 +85,13 @@ public class ButtonMonsterRollManager : MonoBehaviour
                 //				ApplyFailPlayer (fail_player_no, move_count);
             }
             else if (_sceneController.MonsterManager.BattleDices[0].DiceTotalNumber
-          > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
+                     > _sceneController.MonsterManager.BattleDices[1].DiceTotalNumber)
             {
                 var failPlayer = _sceneController.PlayersManager.Players[DataCenter.PlayerTurnNo];
-
                 var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
 
                 StartCoroutine("DisableMonsterPanel");
                 ApplyWinPlayer(winPlayerNo);
-
             }
             else
             {
@@ -111,7 +105,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
 
 
     /// <summary>
-    /// 각 플레이어 주사위 수를 생성;
+    ///     각 플레이어 주사위 수를 생성;
     /// </summary>
     /// <returns></returns>
     public void MonsterRoll()
@@ -125,7 +119,7 @@ public class ButtonMonsterRollManager : MonoBehaviour
 
 
     /// <summary>
-    /// 진 플레이어를 주사위 차만큼 뒤로 이동;
+    ///     진 플레이어를 주사위 차만큼 뒤로 이동;
     /// </summary>
     /// <param name="failPlayerNo"></param>
     /// <param name="moveCount"></param>
@@ -158,10 +152,10 @@ public class ButtonMonsterRollManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies the window player.
+    ///     Applies the window player.
     /// </summary>
     /// <param name='winPlayerNo'>
-    /// Win_player_no.
+    ///     Win_player_no.
     /// </param>
     public void ApplyWinPlayer(int winPlayerNo)
     {
@@ -197,10 +191,10 @@ public class ButtonMonsterRollManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Disables the monster panel.
+    ///     Disables the monster panel.
     /// </summary>
     /// <returns>
-    /// The monster panel.
+    ///     The monster panel.
     /// </returns>
     public IEnumerator DisableMonsterPanel()
     {

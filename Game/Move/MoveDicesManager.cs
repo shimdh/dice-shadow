@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Move dices.
+///     Move dices.
 /// </summary>
-public class MoveDicesManager : MonoBehaviour {
+public class MoveDicesManager : MonoBehaviour
+{
     public MoveDice[] MoveDices;
     public int TotalDiceNumber;
 
-    void Awake()
+    private void Awake()
     {
         MoveDices = new MoveDice[DataCenter.MoveAllDiceCount];
 
         GetObjects();
     }
 
-	// Use this for initialization
-	void Start () {
-
+    // Use this for initialization
+    private void Start()
+    {
         ResetDices();
-	}
-	
-	/// <summary>
-	/// Gets the objects.
-	/// </summary>
+    }
+
+    /// <summary>
+    ///     Gets the objects.
+    /// </summary>
     private void GetObjects()
     {
         for (var i = 0; i < DataCenter.MoveAllDiceCount; i++)
@@ -30,16 +31,16 @@ public class MoveDicesManager : MonoBehaviour {
             MoveDices[i] = GameObject.Find("Dice " + (i + 1)).GetComponent<MoveDice>();
         }
     }
-	
-	/// <summary>
-	/// Resets the dices.
-	/// </summary>
+
+    /// <summary>
+    ///     Resets the dices.
+    /// </summary>
     public void ResetDices()
     {
         for (var i = 0; i < MoveDices.Length; i++)
         {
             MoveDices[i].ResetDiceNumber();
-            if (DataCenter.MoveDiceCount < i+1)
+            if (DataCenter.MoveDiceCount < i + 1)
             {
                 MoveDices[i].DeactiveDice();
             }
@@ -47,10 +48,10 @@ public class MoveDicesManager : MonoBehaviour {
 
         TotalDiceNumber = 0;
     }
-	
-	/// <summary>
-	/// Generates the dice number.
-	/// </summary>
+
+    /// <summary>
+    ///     Generates the dice number.
+    /// </summary>
     public void GenerateDiceNumber()
     {
         TotalDiceNumber = 0;
@@ -61,7 +62,4 @@ public class MoveDicesManager : MonoBehaviour {
             TotalDiceNumber += MoveDices[i].Number;
         }
     }
-
-
-
 }

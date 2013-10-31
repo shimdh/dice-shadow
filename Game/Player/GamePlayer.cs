@@ -376,7 +376,7 @@ public class GamePlayer : MonoBehaviour
 
         RemoveBlockPosition();
 
-        float movingTime = 0.5f;
+        var movingTime = 0.5f;
         if (isQuick)
         {
             movingTime = 0.0f;
@@ -417,7 +417,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void SetTargetBlockObject()
     {
-        string strNum = string.Format("{0:000}", NextNum);
+        var strNum = string.Format("{0:000}", NextNum);
         TargetBlockObject = GameObject.Find(DataCenter.HexPrefix + strNum);
     }
 
@@ -446,7 +446,7 @@ public class GamePlayer : MonoBehaviour
     public void InitAttackDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].AttackDiceCount;
         }
@@ -464,7 +464,7 @@ public class GamePlayer : MonoBehaviour
     public void InitDefenceDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].DefenceDiceCount;
         }
@@ -482,7 +482,7 @@ public class GamePlayer : MonoBehaviour
     public void InitHealthTotal()
     {
         HealthTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             HealthTotalCount += Cards[i].HealthPoint;
         }
@@ -494,7 +494,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void InitCards()
     {
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             Cards[i] = new GameCard();
             Cards[i].GeneratePoint();

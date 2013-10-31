@@ -61,6 +61,7 @@ public static class DataCenter
 
     public const string GameSceneObjectName = "go_SceneManager"; // 게임씬 매니저의 이름;
     public const string HexPrefix = "hex_tile_"; // 블럭 이름을 가져올 접두어;
+
     public static int PlayerCount = 2; // 현재 게임중인 플레이어 수;
     public static int MoveAllDiceCount = 3; // 화면에 있는 전체 이동 주사위 갯수(안보이는 것도 포함);
     public static int MoveDiceCount = 1; // 이동 주사위의 갯수;

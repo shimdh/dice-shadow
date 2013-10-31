@@ -14,10 +14,10 @@ public class GameSceneController : MonoBehaviour
     public Vector3 CamPivotLocation;
     public Transform CamPivotTr;
     public UILabel ShowLabel;
+    public float ShowStateTime = 0.5f;
     public GameObject ThreeCamera;
     public GameObject TwoCamera;
     public GameObject UiCamera;
-    public float ShowStateTime = 0.5f;
 
     #region State Image Objects
 
@@ -92,7 +92,7 @@ public class GameSceneController : MonoBehaviour
     /// <returns></returns>
     public void EnableMovePanel()
     {
-        var playerNo = DataCenter.PlayerTurnNo;
+        int playerNo = DataCenter.PlayerTurnNo;
 
         ActiveTwoCamera();
 
@@ -144,7 +144,7 @@ public class GameSceneController : MonoBehaviour
     /// <returns></returns>
     public void ApplyMoveDiceNumber(int num)
     {
-        var playerNo = DataCenter.PlayerTurnNo;
+        int playerNo = DataCenter.PlayerTurnNo;
 
         DisableMovePanel();
 
@@ -232,10 +232,10 @@ public class GameSceneController : MonoBehaviour
 
         BattleManager.ActiveBattlePanel();
 
-        var i = 0;
+        int i = 0;
         var diceCount = new List<int>();
         foreach (
-            var gamePlayer in
+            GamePlayer gamePlayer in
                 targetBlock.VisitedPlayers.Select(playerNumber => PlayersManager.Players[playerNumber]))
         {
             gamePlayer.InitBattleDiceTotal(i);
@@ -277,9 +277,9 @@ public class GameSceneController : MonoBehaviour
 
         var diceCount = new List<int>();
 
-        var playerNumber = targetBlock.VisitedPlayers[0];
+        int playerNumber = targetBlock.VisitedPlayers[0];
 
-        var gamePlayer = PlayersManager.Players[playerNumber];
+        GamePlayer gamePlayer = PlayersManager.Players[playerNumber];
         gamePlayer.InitBattleDiceTotal(1);
 
         targetBlock.MonsterCard.InitDiceCount();
@@ -330,8 +330,8 @@ public class GameSceneController : MonoBehaviour
 
         var diceCount = new List<int>();
 
-        var playerNumber = targetBlock.VisitedPlayers[0];
-        var gamePlayer = PlayersManager.Players[playerNumber];
+        int playerNumber = targetBlock.VisitedPlayers[0];
+        GamePlayer gamePlayer = PlayersManager.Players[playerNumber];
 
         gamePlayer.InitBattleDiceTotal(1);
 
@@ -418,7 +418,7 @@ public class GameSceneController : MonoBehaviour
             MoveManager.MoveDicePanel.SetActive(true);
         }
 
-        for (var i = 0; i < DataCenter.PlayerCount; i++)
+        for (int i = 0; i < DataCenter.PlayerCount; i++)
         {
             PlayersManager.Players[i].RemainMoveCount = 0;
             PlayersManager.Players[i].NextNum = 0;

@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Monster panel manager.
+///     Monster panel manager.
 /// </summary>
 public class MonsterPanelManager : MonoBehaviour
 {
-    public GameObject MonsterPanel;
     public BattleDices[] BattleDices;
+    public GameObject MonsterPanel;
     public ButtonMonsterRollManager RollManager;
 
-    
+
     /// <summary>
-    /// 전체 주사위 오브젝트들을 비활성화;
+    ///     전체 주사위 오브젝트들을 비활성화;
     /// </summary>
     /// <returns></returns>
     public void DisableAllMonsterDices()
@@ -24,7 +24,7 @@ public class MonsterPanelManager : MonoBehaviour
 
 
     /// <summary>
-    /// 유효한 주사위 오브젝트들만 활성화;
+    ///     유효한 주사위 오브젝트들만 활성화;
     /// </summary>
     /// <param name="diceCount">각 주사위 갯수;</param>
     /// <returns></returns>
@@ -39,7 +39,7 @@ public class MonsterPanelManager : MonoBehaviour
 
 
     /// <summary>
-    /// 배틀 패널 활성화;
+    ///     배틀 패널 활성화;
     /// </summary>
     /// <returns></returns>
     public void ActiveMonsterPanel()

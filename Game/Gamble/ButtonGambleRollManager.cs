@@ -1,23 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
-/// Button gemble roll manager.
+///     Button gemble roll manager.
 /// </summary>
 public class ButtonGambleRollManager : MonoBehaviour
 {
-
     private GameSceneController _sceneController;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         _sceneController = GameSceneController.Instance;
     }
 
 
     /// <summary>
-    /// 롤 버튼 클릭시;
+    ///     롤 버튼 클릭시;
     /// </summary>
     /// <returns></returns>
     public void OnClick()
@@ -25,14 +24,13 @@ public class ButtonGambleRollManager : MonoBehaviour
         GambleRoll();
 
         StartCoroutine("ApplyGambleResult");
-
     }
 
     /// <summary>
-    /// Applies the monster result.
+    ///     Applies the monster result.
     /// </summary>
     /// <returns>
-    /// The monster result.
+    ///     The monster result.
     /// </returns>
     public IEnumerator ApplyGambleResult()
     {
@@ -52,7 +50,6 @@ public class ButtonGambleRollManager : MonoBehaviour
                 StartCoroutine("DisableGamblePanel");
                 ApplyFailToMoveStart(failPlayerNo, failPlayer.CurrentNum);
                 //                ApplyFailPlayer(fail_player_no, move_count);
-
             }
             else if (diceTotalNumber0 < diceTotalNumber1)
             {
@@ -76,18 +73,17 @@ public class ButtonGambleRollManager : MonoBehaviour
             }
             else if (diceTotalNumber0 > diceTotalNumber1)
             {
-                int winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
+                var winPlayerNo = failPlayer.TargetBlock.VisitedPlayers[0];
 
                 StartCoroutine("DisableGamblePanel");
                 ApplyWinPlayer(winPlayerNo);
-
             }
         }
     }
 
 
     /// <summary>
-    /// 각 플레이어 주사위 수를 생성;
+    ///     각 플레이어 주사위 수를 생성;
     /// </summary>
     /// <returns></returns>
     public void GambleRoll()
@@ -101,7 +97,7 @@ public class ButtonGambleRollManager : MonoBehaviour
 
 
     /// <summary>
-    /// 진 플레이어를 주사위 차만큼 뒤로 이동;
+    ///     진 플레이어를 주사위 차만큼 뒤로 이동;
     /// </summary>
     /// <param name="failPlayerNo"></param>
     /// <param name="moveCount"></param>
@@ -131,14 +127,13 @@ public class ButtonGambleRollManager : MonoBehaviour
         {
             _sceneController.ApplyMoveToStartFromBattle(currentNo, failPlayerNo);
         }
-
     }
 
     /// <summary>
-    /// Applies the window player.
+    ///     Applies the window player.
     /// </summary>
     /// <param name='winPlayerNo'>
-    /// Win_player_no.
+    ///     Win_player_no.
     /// </param>
     public void ApplyWinPlayer(int winPlayerNo)
     {
@@ -151,10 +146,10 @@ public class ButtonGambleRollManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Disables the monster panel.
+    ///     Disables the monster panel.
     /// </summary>
     /// <returns>
-    /// The monster panel.
+    ///     The monster panel.
     /// </returns>
     public IEnumerator DisableGamblePanel()
     {
