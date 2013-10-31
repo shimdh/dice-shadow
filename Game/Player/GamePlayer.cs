@@ -24,7 +24,7 @@ public class GamePlayer : MonoBehaviour
     public int RemainMoveCount; // 남은 이동할 블럭수;
     public Block TargetBlock; // 이동할 블럭;
     public GameObject TargetBlockObject; // 이동할 블럭 오브젝트;
-    private GameSceneController _sceneController;
+    private GameSceneController _sceneController; // 게임 씬 컨트롤러;
 
 
     // Use this for initialization
@@ -49,7 +49,7 @@ public class GamePlayer : MonoBehaviour
         RemoveBlockPosition();
         TargetBlock.VisitedPlayers.Add(PlayerIndex);
 
-
+        // 현재 머문 블럭에 이미 다른 플레이어가 있을시;
         if (TargetBlock.VisitedPlayers.Count == 2)
         {
             if (_sceneController.MoveManager.MoveDicePanel.activeSelf)
@@ -92,7 +92,7 @@ public class GamePlayer : MonoBehaviour
             case DataCenter.BlockState.Battle: // 블럭의 종류가 배틀일경우;
                 ChangePlayerTurn();
                 break;
-            case DataCenter.BlockState.Monster:
+            case DataCenter.BlockState.Monster: // 블럭의 속성이 몬스터일경우;
                 Debug.Log("DataCenter.BlockState.Monster");
 
                 if (TargetBlock.MonsterCard.HealthPoint > 0)
@@ -114,7 +114,7 @@ public class GamePlayer : MonoBehaviour
 
                 break;
 
-            case DataCenter.BlockState.Keeper:
+            case DataCenter.BlockState.Keeper: // 블럭의 속성이 키퍼일 경우;
                 if (TargetBlock.MonsterCard.HealthPoint > 0)
                 {
                     GotEvent = true;
@@ -122,6 +122,7 @@ public class GamePlayer : MonoBehaviour
                     {
                         _sceneController.DisableMovePanel();
                     }
+
                     _sceneController.ActionStateImage(_sceneController.BattleStateImage);
 
                     DataCenter.State = DataCenter.GameState.Monster;
@@ -150,7 +151,7 @@ public class GamePlayer : MonoBehaviour
                 ChangePlayerTurn();
                 break;
 
-            case DataCenter.BlockState.Ladder:
+            case DataCenter.BlockState.Ladder: // 블럭의 속성이 사다리 일 경우;
                 if (PlayerCharacter.Level >= TargetBlock.LevelLadder)
                 {
                     if (!GotEvent)
@@ -260,14 +261,7 @@ public class GamePlayer : MonoBehaviour
         {
             if (TargetBlock != null)
             {
-                if (TargetBlock.NextFowardBlockNum != -1)
-                {
-                    NextNum = TargetBlock.NextFowardBlockNum;
-                }
-                else
-                {
-                    NextNum = CurrentNum + 1;
-                }
+                NextNum = TargetBlock.NextFowardBlockNum != -1 ? TargetBlock.NextFowardBlockNum : CurrentNum + 1;
             }
             else
             {
@@ -278,14 +272,7 @@ public class GamePlayer : MonoBehaviour
         {
             if (TargetBlock != null)
             {
-                if (TargetBlock.NextReverseBlockNum != -1)
-                {
-                    NextNum = TargetBlock.NextReverseBlockNum;
-                }
-                else
-                {
-                    NextNum = CurrentNum - 1;
-                }
+                NextNum = TargetBlock.NextReverseBlockNum != -1 ? TargetBlock.NextReverseBlockNum : CurrentNum - 1;
             }
             else
             {
@@ -311,32 +298,31 @@ public class GamePlayer : MonoBehaviour
             PlayerCharacter.Experience += TargetBlock.BonusExpPoint;
         }
 
-        if (TargetBlock.BlockState == DataCenter.BlockState.Goal)
+        switch (TargetBlock.BlockState)
         {
-            // 골 블럭이면 종료;
-            _sceneController.ShowLabel.text = "Finished";
-            return;
-        }
+            case DataCenter.BlockState.Goal:
+                _sceneController.ShowLabel.text = "Finished";
+                return;
 
-        if (TargetBlock.BlockState == DataCenter.BlockState.Keeper && TargetBlock.MonsterCard.HealthPoint > 0)
-        {
-            RemainMoveCount = 0;
-        }
-
-        if (TargetBlock.BlockState == DataCenter.BlockState.Start)
-        {
-            RemainMoveCount = 0;
-        }
-
-        if (TargetBlock.BlockState == DataCenter.BlockState.Battle)
-        {
-            // 현재 방문한 블럭이 전투블럭이고
-            if (TargetBlock.VisitedPlayers.Count > 0)
-            {
-                // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
+            case DataCenter.BlockState.Keeper:
+                if (TargetBlock.MonsterCard.HealthPoint > 0)
+                {
+                    RemainMoveCount = 0;
+                }
+                break;
+            case DataCenter.BlockState.Start:
                 RemainMoveCount = 0;
-            }
+                break;
+
+            case DataCenter.BlockState.Battle:
+                if (TargetBlock.VisitedPlayers.Count > 0)
+                {
+                    // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
+                    RemainMoveCount = 0;
+                }
+                break;
         }
+
 
         CurrentNum = NextNum;
 
@@ -446,7 +432,7 @@ public class GamePlayer : MonoBehaviour
     public void InitAttackDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].AttackDiceCount;
         }
@@ -482,7 +468,7 @@ public class GamePlayer : MonoBehaviour
     public void InitHealthTotal()
     {
         HealthTotalCount = 0;
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             HealthTotalCount += Cards[i].HealthPoint;
         }
@@ -494,7 +480,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void InitCards()
     {
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             Cards[i] = new GameCard();
             Cards[i].GeneratePoint();
