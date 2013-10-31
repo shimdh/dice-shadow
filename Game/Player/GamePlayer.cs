@@ -82,12 +82,10 @@ public class GamePlayer : MonoBehaviour
                 {
                     HealthTotalCount += 1;
                     GotEvent = true;
-                    ChangePlayerTurn();
                 }
-                else
-                {
-                    ChangePlayerTurn();
-                }
+                
+                ChangePlayerTurn();
+               
                 break;
             case DataCenter.BlockState.Battle: // 블럭의 종류가 배틀일경우;
                 ChangePlayerTurn();
@@ -179,13 +177,9 @@ public class GamePlayer : MonoBehaviour
                     GotEvent = true;
                     DataCenter.BattleRule = DataCenter.BattleDiceRule.Low;
                     DataCenter.BattleRuleRemainTurn = 3;
-
-                    ChangePlayerTurn();
                 }
-                else
-                {
-                    ChangePlayerTurn();
-                }
+                
+                ChangePlayerTurn();
                 break;
             case DataCenter.BlockState.ComeHere:
                 if (!GotEvent)
@@ -213,12 +207,11 @@ public class GamePlayer : MonoBehaviour
                 {
                     GotEvent = true;
                     targetPlayerNo = PlayerIndex + 1;
-                    //			target_player_no = DataCenter.playerTurnNo + 1;
+
                     if (targetPlayerNo >= DataCenter.PlayerCount)
                     {
                         targetPlayerNo = 0;
                     }
-                    //			ChangePlayerTurn();
                     _sceneController.ActionStateImage(_sceneController.GoStateImage);
 
                     NextNum = _sceneController.PlayersManager.Players[targetPlayerNo].CurrentNum;
@@ -233,12 +226,7 @@ public class GamePlayer : MonoBehaviour
                 break;
         }
 
-        DataCenter.BattleRuleRemainTurn -= 1;
-        if (DataCenter.BattleRuleRemainTurn <= 0)
-        {
-            DataCenter.BattleRuleRemainTurn = 0;
-            DataCenter.BattleRule = DataCenter.BattleDiceRule.High;
-        }
+        DecreaseBattleRuleTurnNo();
 
         if (DataCenter.GameState.Started == DataCenter.State)
         {
@@ -249,19 +237,29 @@ public class GamePlayer : MonoBehaviour
         IsForward = true;
     }
 
+    public void DecreaseBattleRuleTurnNo()
+    {
+        DataCenter.BattleRuleRemainTurn -= 1;
+        if (DataCenter.BattleRuleRemainTurn > 0) return;
+        DataCenter.BattleRuleRemainTurn = 0;
+        DataCenter.BattleRule = DataCenter.BattleDiceRule.High;
+    }
+
     /// <summary>
     ///     플레이어를 이동;
     /// </summary>
     /// <returns></returns>
     public void MovePlayer()
     {
-        //		RemoveBlockPosition ();
+
+        int goNum;
 
         if (IsForward)
         {
             if (TargetBlock != null)
             {
-                NextNum = TargetBlock.NextFowardBlockNum != -1 ? TargetBlock.NextFowardBlockNum : CurrentNum + 1;
+                goNum = TargetBlock.NextFowardBlockNum;
+                NextNum = goNum != -1 ? goNum : CurrentNum + 1;
             }
             else
             {
@@ -272,7 +270,8 @@ public class GamePlayer : MonoBehaviour
         {
             if (TargetBlock != null)
             {
-                NextNum = TargetBlock.NextReverseBlockNum != -1 ? TargetBlock.NextReverseBlockNum : CurrentNum - 1;
+                goNum = TargetBlock.NextReverseBlockNum;
+                NextNum = goNum != -1 ? goNum : CurrentNum - 1;
             }
             else
             {
@@ -345,10 +344,8 @@ public class GamePlayer : MonoBehaviour
     {
         PlayerCharacter.Experience += TargetBlock.ExpPoint;
         DataCenter.PlayerTurnNo += 1;
-        if (DataCenter.PlayerTurnNo >= DataCenter.PlayerCount)
-        {
-            DataCenter.PlayerTurnNo = 0;
-        }
+        if (DataCenter.PlayerTurnNo < DataCenter.PlayerCount) return;
+        DataCenter.PlayerTurnNo = 0;
     }
 
     /// <summary>
@@ -432,7 +429,7 @@ public class GamePlayer : MonoBehaviour
     public void InitAttackDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].AttackDiceCount;
         }
@@ -468,7 +465,7 @@ public class GamePlayer : MonoBehaviour
     public void InitHealthTotal()
     {
         HealthTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             HealthTotalCount += Cards[i].HealthPoint;
         }
@@ -480,7 +477,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void InitCards()
     {
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             Cards[i] = new GameCard();
             Cards[i].GeneratePoint();
