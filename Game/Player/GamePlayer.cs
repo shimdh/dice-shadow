@@ -83,9 +83,9 @@ public class GamePlayer : MonoBehaviour
                     HealthTotalCount += 1;
                     GotEvent = true;
                 }
-                
+
                 ChangePlayerTurn();
-               
+
                 break;
             case DataCenter.BlockState.Battle: // 블럭의 종류가 배틀일경우;
                 ChangePlayerTurn();
@@ -178,7 +178,7 @@ public class GamePlayer : MonoBehaviour
                     DataCenter.BattleRule = DataCenter.BattleDiceRule.Low;
                     DataCenter.BattleRuleRemainTurn = 3;
                 }
-                
+
                 ChangePlayerTurn();
                 break;
             case DataCenter.BlockState.ComeHere:
@@ -251,7 +251,6 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void MovePlayer()
     {
-
         int goNum;
 
         if (IsForward)
@@ -314,9 +313,9 @@ public class GamePlayer : MonoBehaviour
                 break;
 
             case DataCenter.BlockState.Battle:
+                // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
                 if (TargetBlock.VisitedPlayers.Count > 0)
                 {
-                    // 현재 방문한 블럭에 이미 방문한 사용자가 있다면;
                     RemainMoveCount = 0;
                 }
                 break;
@@ -359,7 +358,7 @@ public class GamePlayer : MonoBehaviour
 
         RemoveBlockPosition();
 
-        var movingTime = 0.5f;
+        float movingTime = 0.5f;
         if (isQuick)
         {
             movingTime = 0.0f;
@@ -376,6 +375,9 @@ public class GamePlayer : MonoBehaviour
             "oncomplete", "MovedBlock"));
     }
 
+    /// <summary>
+    ///     원하는 위치로 바로 이동;
+    /// </summary>
     public void JustMoveTo()
     {
         _sceneController.ActiveThreeCamera(gameObject.transform);
@@ -400,7 +402,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void SetTargetBlockObject()
     {
-        var strNum = string.Format("{0:000}", NextNum);
+        string strNum = string.Format("{0:000}", NextNum);
         TargetBlockObject = GameObject.Find(DataCenter.HexPrefix + strNum);
     }
 
@@ -429,7 +431,7 @@ public class GamePlayer : MonoBehaviour
     public void InitAttackDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].AttackDiceCount;
         }
@@ -447,7 +449,7 @@ public class GamePlayer : MonoBehaviour
     public void InitDefenceDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             BattleDiceTotalCount += Cards[i].DefenceDiceCount;
         }
@@ -465,7 +467,7 @@ public class GamePlayer : MonoBehaviour
     public void InitHealthTotal()
     {
         HealthTotalCount = 0;
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             HealthTotalCount += Cards[i].HealthPoint;
         }
@@ -477,7 +479,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void InitCards()
     {
-        for (var i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             Cards[i] = new GameCard();
             Cards[i].GeneratePoint();
@@ -485,7 +487,7 @@ public class GamePlayer : MonoBehaviour
     }
 
     /// <summary>
-    ///     Updates the name of the player.
+    ///     플레이어의 이름을 업데이트;
     /// </summary>
     public void UpdatePlayerName()
     {
@@ -493,7 +495,7 @@ public class GamePlayer : MonoBehaviour
     }
 
     /// <summary>
-    ///     Removes the block position.
+    ///     현재 머물렀던 블럭의 흔적을 지운다;
     /// </summary>
     public void RemoveBlockPosition()
     {
