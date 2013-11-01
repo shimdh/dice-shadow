@@ -287,8 +287,7 @@ public class GamePlayer : MonoBehaviour
     public void MovedBlock()
     {
         RemainMoveCount -= 1;
-        //Debug.Log ("remainMoveCount: " + remainMoveCount.ToString ());
-
+        
         TargetBlock = TargetBlockObject.GetComponent<Block>();
 
         if (TargetBlock.BonusExpPoint > 0 && IsForward)
