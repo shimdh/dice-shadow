@@ -27,7 +27,7 @@ public class BattleDice : MonoBehaviour
         _diceLabel.text = Convert.ToString(DiceNumber);
     }
 
-
+    
     /// <summary>
     ///     주사위 수를 생성;
     /// </summary>
@@ -37,4 +37,5 @@ public class BattleDice : MonoBehaviour
         DiceNumber = Random.Range(1, 6);
         _diceLabel.text = Convert.ToString(DiceNumber);
     }
+    
 }
