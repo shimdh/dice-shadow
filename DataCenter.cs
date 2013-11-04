@@ -35,7 +35,7 @@ public static class DataCenter
         ImGoing, // 자신을 타켓 플레이어 위치로 이동;
         Start, // 출발지;
         Goal, // 목적지;
-        Blank,
+        Blank, // 빈 블럭;
         Keeper, // 몬스터 블럭이나 무조건 멈춤;
     };
 
