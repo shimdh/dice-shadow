@@ -234,10 +234,9 @@ public class GameSceneController : MonoBehaviour
 
         int i = 0;
         var diceCount = new List<int>();
-        foreach (
-            GamePlayer gamePlayer in
-                targetBlock.VisitedPlayers.Select(playerNumber => PlayersManager.Players[playerNumber]))
+        foreach (int playerNumber in targetBlock.VisitedPlayers)
         {
+            GamePlayer gamePlayer = PlayersManager.Players[playerNumber];
             gamePlayer.InitBattleDiceTotal(i);
 
             BattleManager.BattleDices[i].BattlePlayerName.UpdatePlayerName(gamePlayer.PlayerName);
