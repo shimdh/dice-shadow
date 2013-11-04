@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -192,6 +191,12 @@ public class GameSceneController : MonoBehaviour
         PlayersManager.Players[playerNo].MovePlayer();
     }
 
+
+    /// <summary>
+    /// 전투에서 진 후 시작지점으로 이동;
+    /// </summary>
+    /// <param name="currentNum">현재 블럭번호;</param>
+    /// <param name="playerNo">플레이어의 인덱스;</param>
     public void ApplyMoveToStartFromBattle(int currentNum, int playerNo)
     {
         int startNo;
@@ -252,7 +257,7 @@ public class GameSceneController : MonoBehaviour
 
 
     /// <summary>
-    ///     전투 패널을 비활성화;
+    ///     전투 패널 비활성화;
     /// </summary>
     /// <returns></returns>
     public void DisableBattlePanel()
@@ -261,10 +266,10 @@ public class GameSceneController : MonoBehaviour
     }
 
     /// <summary>
-    ///     Enables the monster panel.
+    ///     몬스터 패널 활성화;
     /// </summary>
     /// <param name='targetBlock'>
-    ///     Target_block.
+    ///     도착한 블럭;
     /// </param>
     public void EnableMonsterPanel(Block targetBlock)
     {
@@ -305,7 +310,7 @@ public class GameSceneController : MonoBehaviour
     }
 
     /// <summary>
-    ///     Disables the monster panel.
+    ///     몬스터 패널 비활성화;
     /// </summary>
     public void DisableMonsterPanel()
     {
@@ -314,7 +319,7 @@ public class GameSceneController : MonoBehaviour
 
 
     /// <summary>
-    ///     Enables the gemble panel.
+    ///     겜블패널 활성화;
     /// </summary>
     /// <param name='targetBlock'>
     ///     Target_block.
@@ -350,13 +355,16 @@ public class GameSceneController : MonoBehaviour
     }
 
     /// <summary>
-    ///     Disables the gemble panel.
+    ///     겜블패널 비활성화;
     /// </summary>
     public void DisableGamblePanel()
     {
         GambleManager.GamblePanel.SetActive(false);
     }
 
+    /// <summary>
+    /// 2D 카메라 활성화;
+    /// </summary>
     public void ActiveTwoCamera()
     {
         if (ThreeCamera.activeSelf)
@@ -380,6 +388,10 @@ public class GameSceneController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 3D 카메라 활성화;
+    /// </summary>
+    /// <param name="objectTr"></param>
     public void ActiveThreeCamera(Transform objectTr)
     {
         if (TwoCamera.activeSelf)
@@ -395,6 +407,10 @@ public class GameSceneController : MonoBehaviour
         CamMove.Follow(objectTr);
     }
 
+
+    /// <summary>
+    /// 게임 재시작;
+    /// </summary>
     public void RestartGame()
     {
         if (BattleManager.BattlePanel.activeSelf)
@@ -451,7 +467,7 @@ public class GameSceneController : MonoBehaviour
     }
 
     /// <summary>
-    ///     Raises the application quit event.
+    ///     게임 종료시에 호출;
     /// </summary>
     public void OnApplicationQuit()
     {
