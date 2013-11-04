@@ -11,7 +11,7 @@ public class GamePlayer : MonoBehaviour
 
     public GameCard[] Cards = new GameCard[3]; // 소지한 각 카드정보;
     public int CurrentNum; // 현재 블럭 번호;
-    public List<int> DiceNumbers = new List<int>(); // 나온 각 주사위 갯수;
+    public List<int> DiceNumbers; // 나온 각 주사위 갯수;
 
     public bool GotEvent = false; // 블럭에서의 이벤트 수행여부;
     public int HealthTotalCount; // HP 토탈 포인트;
@@ -33,6 +33,7 @@ public class GamePlayer : MonoBehaviour
         _sceneController = GameSceneController.Instance;
         CurrentNum = 0;
 
+        Cards = new GameCard[CardTotal];
         InitCards();
         InitHealthTotal();
     }
@@ -430,7 +431,7 @@ public class GamePlayer : MonoBehaviour
     public void InitAttackDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < CardTotal; i++)
         {
             BattleDiceTotalCount += Cards[i].AttackDiceCount;
         }
@@ -448,7 +449,7 @@ public class GamePlayer : MonoBehaviour
     public void InitDefenceDiceTotal()
     {
         BattleDiceTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < CardTotal; i++)
         {
             BattleDiceTotalCount += Cards[i].DefenceDiceCount;
         }
@@ -466,7 +467,7 @@ public class GamePlayer : MonoBehaviour
     public void InitHealthTotal()
     {
         HealthTotalCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < CardTotal; i++)
         {
             HealthTotalCount += Cards[i].HealthPoint;
         }
@@ -478,7 +479,7 @@ public class GamePlayer : MonoBehaviour
     /// <returns></returns>
     public void InitCards()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < CardTotal; i++)
         {
             Cards[i] = new GameCard();
             Cards[i].GeneratePoint();
