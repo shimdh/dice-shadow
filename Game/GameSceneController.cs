@@ -9,14 +9,14 @@ public class GameSceneController : MonoBehaviour
 {
     private static GameSceneController _instance;
 
-    public CameraMove CamMove;
+    public CameraMove CamMove; // 카메라 이동관련 클래스;
     public Vector3 CamPivotLocation;
     public Transform CamPivotTr;
-    public UILabel ShowLabel;
+    public UILabel ShowLabel; // 상태를 보여주기 위한 라벨;
     public float ShowStateTime = 0.5f;
-    public GameObject ThreeCamera;
-    public GameObject TwoCamera;
-    public GameObject UiCamera;
+    public GameObject ThreeCamera; // 3D 카메라;
+    public GameObject TwoCamera; // 2D 카메라;
+    public GameObject UiCamera; // UI 카메라;
 
     #region State Image Objects
 
@@ -43,11 +43,11 @@ public class GameSceneController : MonoBehaviour
 
     #region Manger Objects
 
-    public BattlePanelManager BattleManager;
-    public GamblePanelManager GambleManager;
-    public MonsterPanelManager MonsterManager;
-    public MovePanelManager MoveManager;
-    public GamePlayersManager PlayersManager;
+    public BattlePanelManager BattleManager; // 배틀 패널 매니저 클래스;
+    public GamblePanelManager GambleManager; // 겜블 패널 매니저 클래스;
+    public MonsterPanelManager MonsterManager; // 몬스터 패널 매니저 클래스;
+    public MovePanelManager MoveManager; // 이동 패널 매니저 클래스;
+    public GamePlayersManager PlayersManager; // 플레이어 관리 클래스;
 
     #endregion
 
@@ -264,7 +264,8 @@ public class GameSceneController : MonoBehaviour
     {
         BattleManager.BattlePanel.SetActive(false);
     }
-
+	
+	
     /// <summary>
     ///     몬스터 패널 활성화;
     /// </summary>
@@ -309,6 +310,7 @@ public class GameSceneController : MonoBehaviour
         }
     }
 
+	
     /// <summary>
     ///     몬스터 패널 비활성화;
     /// </summary>
@@ -445,12 +447,28 @@ public class GameSceneController : MonoBehaviour
         EnableMovePanel();
     }
 
-
+	
+	/// <summary>
+	/// 정해진 이미지 오브젝트를 잠시 활성화하고 비활성화하는 코루틴을 호출;
+	/// </summary>
+	/// <param name='stateImage'>
+	/// 보여줄 이미지 오브젝트;
+	/// </param>
     public void ActionStateImage(GameObject stateImage)
     {
         StartCoroutine(ShowStateImage(stateImage));
     }
-
+	
+	
+	/// <summary>
+	/// 정해진 이미지 오브젝트를 잠시 활성화하고 비활성화한다;
+	/// </summary>
+	/// <returns>
+	/// The state image.
+	/// </returns>
+	/// <param name='stateImage'>
+	/// 보여줄 이미지 오브젝트;
+	/// </param>
     public IEnumerator ShowStateImage(GameObject stateImage)
     {
         if (!stateImage.activeSelf)
@@ -465,7 +483,8 @@ public class GameSceneController : MonoBehaviour
             stateImage.SetActive(false);
         }
     }
-
+	
+	
     /// <summary>
     ///     게임 종료시에 호출;
     /// </summary>

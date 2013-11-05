@@ -68,10 +68,11 @@ public static class DataCenter
     public static int PlayerTurnNo = 0; // 현재 게임 진행중인 플레이어 인덱스;
     public static GameState State = GameState.Idle; // 현재 게임의 상태;
     public static BattleDiceRule BattleRule = BattleDiceRule.High; // 현재 진행중인 게임의 배틀시 주사위 룰;
-    public static int BattleRuleRemainTurn = 0;
+    public static int BattleRuleRemainTurn = 0; // 기존 배틀룰로의 남은 턴;
 
     public static int[] BlockCount = {20, 10, 10};
-
+	
+	// 상위 레벨로 넘어가기 위해 필요한 경험치;
     public static int[] PlayerLevel =
     {
         100, 200, 300, 400, 500, 600, 700, 800, 900
